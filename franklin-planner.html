@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DailyWorks</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --cream-dark: #ede5d5;
+    --cream-deep: #d9cdb8;
+    --leather: #8b5e3c;
+    --leather-dark: #6b4423;
+    --leather-light: #c49a6c;
+    --ink: #2c2416;
+    --ink-mid: #5a4a35;
+    --ink-light: #8a7a65;
+    --gold: #c9a84c;
+    --gold-light: #e8d08a;
+    --red-priority: #8b2c2c;
+    --green-accent: #3d6b4f;
+    --blue-accent: #2c4a6b;
+    --shadow-warm: rgba(139, 94, 60, 0.15);
+    --shadow-deep: rgba(44, 36, 22, 0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream-deep);
+    background-image: 
+      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(139,94,60,0.08) 0%, transparent 60%);
+    font-family: 'EB Garamond', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  /* HEADER / TOP NAV */
+  .app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding: 0 4px;
+  }
+
+  .app-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--leather-dark);
+    letter-spacing: 0.02em;
+  }
+
+  .app-title span {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .date-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .date-btn {
+    background: none;
+    border: 1px solid var(--leather-light);
+    color: var(--leather);
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .date-btn:hover { background: var(--leather); color: var(--cream); }
+
+  .current-date {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--ink-mid);
+    text-align: center;
+    min-width: 180px;
+  }
+  .current-date .day-name {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    display: block;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .action-btn {
+    background: var(--leather);
+    color: var(--cream);
+    border: none;
+    padding: 8px 18px;
+    border-radius: 3px;
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .action-btn:hover { background: var(--leather-dark); }
+  .action-btn.secondary {
+    background: transparent;
+    border: 1px solid var(--leather);
+    color: var(--leather);
+  }
+  .action-btn.secondary:hover { background: var(--leather); color: var(--cream); }
+
+  /* TAB NAV */
+  .tab-nav {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--leather-light);
+    padding-bottom: 0;
+  }
+
+  .tab {
+    padding: 10px 22px;
+    background: none;
+    border: none;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--ink-light);
+    cursor: pointer;
+    position: relative;
+    bottom: -2px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .tab:hover { color: var(--leather); }
+  .tab.active {
+    color: var(--leather-dark);
+    border-bottom-color: var(--leather-dark);
+    font-weight: 600;
+  }
+
+  /* MAIN LAYOUT */
+  .planner-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 20px;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .left-column { display: flex; flex-direction: column; gap: 20px; }
+  .right-column { display: flex; flex-direction: column; gap: 20px; }
+
+  /* CARD BASE */
+  .card {
+    background: var(--cream);
+    border-radius: 4px;
+    box-shadow: 
+      0 1px 3px var(--shadow-warm),
+      0 4px 16px var(--shadow-deep),
+      inset 0 1px 0 rgba(255,255,255,0.6);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--leather) 0%, var(--gold) 50%, var(--leather) 100%);
+  }
+
+  .card-header {
+    padding: 14px 20px 10px;
+    border-bottom: 1px solid var(--cream-deep);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--leather-dark);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .card-body { padding: 16px 20px; }
+
+  /* DAILY FOCUS */
+  .daily-focus textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--ink);
+    resize: none;
+    outline: none;
+    line-height: 1.5;
+    min-height: 60px;
+  }
+  .daily-focus textarea::placeholder { color: var(--ink-light); opacity: 0.7; }
+
+  /* PRIORITY TASKS */
+  .priority-legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .priority-badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--ink-light);
+    font-family: 'Courier Prime', monospace;
+  }
+  .pb-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .pb-a { background: var(--red-priority); }
+  .pb-b { background: var(--leather); }
+  .pb-c { background: var(--ink-light); }
+
+  .task-list { list-style: none; }
+
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--cream-dark);
+    animation: slideIn 0.25s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .task-item:last-child { border-bottom: none; }
+
+  .task-checkbox {
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--leather-light);
+    border-radius: 2px;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    background: white;
+  }
+  .task-checkbox.checked {
+    background: var(--leather);
+    border-color: var(--leather);
+  }
+  .task-checkbox.checked::after {
+    content: '✓';
+    color: white;
+    font-size: 11px;
+  }
+
+  .task-priority {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    min-width: 24px;
+    margin-top: 2px;
+  }
+  .priority-A { color: var(--red-priority); }
+  .priority-B { color: var(--leather); }
+  .priority-C { color: var(--ink-light); }
+
+  .task-text {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.4;
+    outline: none;
+    background: transparent;
+    border: none;
+    font-family: 'EB Garamond', serif;
+    color: var(--ink);
+    cursor: text;
+  }
+  .task-text.done {
+    text-decoration: line-through;
+    color: var(--ink-light);
+  }
+
+  .task-del {
+    background: none;
+    border: none;
+    color: var(--ink-light);
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    padding: 2px 4px;
+  }
+  .task-item:hover .task-del { opacity: 1; }
+  .task-del:hover { color: var(--red-priority); }
+
+  .add-task-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    align-items: center;
+  }
+
+  .priority-select {
+    background: var(--cream-dark);
+    border: 1px solid var(--cream-deep);
+    color: var(--ink);
+    padding: 6px 8px;
+    border-radius: 3px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .add-task-input {
+    flex: 1;
+    background: white;
+    border: 1px solid var(--cream-deep);
+    border-radius: 3px;
+    padding: 7px 12px;
+    font-family: 'EB Garamond', serif;
+    font-size: 15px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .add-task-input:focus { border-color: var(--leather-light); }
+
+  .add-btn {
+    background: var(--leather);
+    color: var(--cream);
+    border: none;
+    padding: 7px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    transition: background 0.2s;
+  }
+  .add-btn:hover { background: var(--leather-dark); }
+
+  /* APPOINTMENTS */
+  .schedule-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .time-slot {
+    display: flex;
+    gap: 12px;
+    min-height: 36px;
+    align-items: stretch;
+  }
+
+  .time-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    color: var(--ink-light);
+    min-width: 42px;
+    padding-top: 4px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .time-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 0;
+  }
+  .time-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    border: 1.5px solid var(--leather-light);
+    background: var(--cream);
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+  .time-connector {
+    flex: 1;
+    width: 1px;
+    background: var(--cream-deep);
+    min-height: 20px;
+  }
+
+  .slot-content {
+    flex: 1;
+    padding: 3px 0 8px;
+  }
+
+  .appointment-entry {
+    background: var(--cream-dark);
+    border-left: 3px solid var(--leather-light);
+    border-radius: 0 3px 3px 0;
+    padding: 5px 10px;
+    margin-bottom: 3px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .appointment-entry:hover { border-left-color: var(--leather); background: var(--cream-deep); }
+  .appointment-entry.gold { border-left-color: var(--gold); }
+  .appointment-entry.blue { border-left-color: var(--blue-accent); }
+
+  .appt-del {
+    background: none; border: none;
+    color: var(--ink-light); font-size: 12px;
+    cursor: pointer; opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .appointment-entry:hover .appt-del { opacity: 1; }
+
+  .slot-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed var(--cream-deep);
+    padding: 3px 2px;
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    opacity: 0.5;
+    transition: opacity 0.2s, border-color 0.2s;
+  }
+  .slot-input:focus { opacity: 1; border-bottom-color: var(--leather-light); }
+  .slot-input::placeholder { color: var(--ink-light); font-style: italic; }
+
+  /* NOTES */
+  .notes-area {
+    width: 100%;
+    min-height: 130px;
+    background: transparent;
+    border: none;
+    font-family: 'EB Garamond', serif;
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.8;
+    resize: vertical;
+    outline: none;
+    background-image: repeating-linear-gradient(
+      transparent, transparent 28px, var(--cream-dark) 28px, var(--cream-dark) 29px
+    );
+    background-size: 100% 29px;
+    padding-top: 6px;
+  }
+
+  /* RIGHT COLUMN */
+
+  /* HEALTH STATS */
+  .health-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .health-stat {
+    background: var(--cream-dark);
+    border-radius: 4px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .health-stat::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--leather-light);
+    opacity: 0.4;
+  }
+
+  .stat-icon {
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+
+  .stat-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+
+  .stat-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--leather-light);
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--leather-dark);
+    width: 100%;
+    outline: none;
+    padding: 2px 0;
+  }
+
+  .stat-unit {
+    font-size: 11px;
+    color: var(--ink-light);
+    font-family: 'EB Garamond', serif;
+  }
+
+  /* HABIT TRACKER */
+  .habit-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .habit-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .habit-row:last-child { border-bottom: none; }
+
+  .habit-name {
+    flex: 1;
+    font-size: 14px;
+    color: var(--ink);
+    font-family: 'EB Garamond', serif;
+  }
+
+  .habit-check {
+    width: 24px; height: 24px;
+    border: 1.5px solid var(--leather-light);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .habit-check.done {
+    background: var(--green-accent);
+    border-color: var(--green-accent);
+    color: white;
+  }
+
+  .habit-streak {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    min-width: 28px;
+    text-align: right;
+  }
+
+  .add-habit-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .add-habit-input {
+    flex: 1;
+    background: white;
+    border: 1px solid var(--cream-deep);
+    border-radius: 3px;
+    padding: 6px 10px;
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+  }
+  .add-habit-input:focus { border-color: var(--leather-light); }
+
+  /* WEEKLY OVERVIEW */
+  .weekly-tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .weekly-tab-content.active { display: block; }
+  .daily-tab-content { animation: fadeIn 0.3s ease; }
+  .daily-tab-content.hidden { display: none; }
+
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .week-day-card {
+    background: var(--cream);
+    border-radius: 4px;
+    padding: 12px 10px;
+    box-shadow: 0 2px 8px var(--shadow-warm);
+    min-height: 160px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-top: 2px solid var(--cream-deep);
+  }
+  .week-day-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px var(--shadow-deep); }
+  .week-day-card.today { border-top-color: var(--gold); }
+
+  .wdc-name {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 2px;
+  }
+  .wdc-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--leather-dark);
+    margin-bottom: 10px;
+  }
+  .week-day-card.today .wdc-num { color: var(--gold); }
+
+  .wdc-task {
+    font-size: 11px;
+    color: var(--ink-mid);
+    padding: 2px 0;
+    border-bottom: 1px solid var(--cream-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .wdc-task-count {
+    position: absolute;
+    bottom: 8px; right: 10px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    color: var(--leather-light);
+  }
+
+  /* GOALS & VALUES */
+  .goals-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .goal-card {
+    background: var(--cream);
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 0 2px 8px var(--shadow-warm);
+  }
+
+  .goal-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--leather-dark);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--cream-deep);
+    letter-spacing: 0.08em;
+  }
+
+  .goal-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+
+  .goal-bullet {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  .goal-text {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--cream-dark);
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    padding: 2px 0;
+    width: 100%;
+  }
+  .goal-text:focus { border-bottom-color: var(--leather-light); }
+  .goal-text::placeholder { color: var(--ink-light); font-style: italic; }
+
+  /* HISTORY TAB */
+  .history-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .history-content.active { display: block; }
+
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .history-table th {
+    background: var(--cream-dark);
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    border-bottom: 2px solid var(--leather-light);
+  }
+  .history-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--cream-dark);
+    color: var(--ink-mid);
+  }
+  .history-table tr:hover td { background: var(--cream-dark); }
+
+  /* EXPORT PANEL */
+  .export-panel {
+    background: var(--cream-dark);
+    border-radius: 4px;
+    padding: 20px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .export-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--ink-mid);
+    font-style: italic;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .export-btn {
+    background: var(--leather);
+    color: var(--cream);
+    border: none;
+    padding: 9px 20px;
+    border-radius: 3px;
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .export-btn:hover { background: var(--leather-dark); }
+  .export-btn.gold-btn {
+    background: var(--gold);
+    color: var(--ink);
+  }
+  .export-btn.gold-btn:hover { background: var(--gold-light); }
+
+  /* DECORATIVE RULE */
+  .ornamental-rule {
+    text-align: center;
+    color: var(--leather-light);
+    font-size: 18px;
+    letter-spacing: 6px;
+    margin: 4px 0;
+    opacity: 0.6;
+    user-select: none;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .planner-grid { grid-template-columns: 1fr; }
+    .goals-section { grid-template-columns: 1fr; }
+    .week-grid { grid-template-columns: repeat(7, 1fr); }
+  }
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .week-grid { grid-template-columns: repeat(3, 1fr); }
+    .health-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--leather-dark);
+    color: var(--cream);
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-family: 'EB Garamond', serif;
+    font-size: 15px;
+    box-shadow: 0 4px 20px var(--shadow-deep);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s;
+    z-index: 1000;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="app-title">Daily<span>Works</span></div>
+  <div class="date-nav">
+    <button class="date-btn" onclick="changeDate(-1)">‹</button>
+    <div class="current-date">
+      <span class="day-name" id="dayName"></span>
+      <span id="fullDate"></span>
+    </div>
+    <button class="date-btn" onclick="changeDate(1)">›</button>
+  </div>
+  <div class="header-actions">
+    <button class="action-btn secondary" onclick="exportCSV()">Export CSV</button>
+    <button class="action-btn" onclick="saveData()">Save</button>
+  </div>
+</div>
+
+<nav class="tab-nav">
+  <button class="tab active" onclick="switchTab('daily')">Daily</button>
+  <button class="tab" onclick="switchTab('weekly')">Weekly</button>
+  <button class="tab" onclick="switchTab('goals')">Goals & Values</button>
+  <button class="tab" onclick="switchTab('history')">History</button>
+</nav>
+
+<!-- DAILY VIEW -->
+<div id="tab-daily" class="daily-tab-content">
+  <div class="planner-grid">
+    <div class="left-column">
+
+      <!-- Daily Focus -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">✦ Daily Focus</span>
+        </div>
+        <div class="card-body">
+          <textarea id="dailyFocus" placeholder="What matters most today? What is your intention for this day..." rows="2"></textarea>
+        </div>
+      </div>
+
+      <!-- Priority Tasks -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">✦ Prioritized Tasks</span>
+          <div class="priority-legend">
+            <span class="priority-badge"><span class="pb-dot pb-a"></span>A — Must Do</span>
+            <span class="priority-badge"><span class="pb-dot pb-b"></span>B — Should Do</span>
+            <span class="priority-badge"><span class="pb-dot pb-c"></span>C — Nice To Do</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul class="task-list" id="taskList"></ul>
+          <div class="add-task-row">
+            <select class="priority-select" id="newTaskPriority">
+              <option>A</option>
+              <option selected>B</option>
+              <option>C</option>
+            </select>
+            <input class="add-task-input" id="newTaskInput" placeholder="Add a task..." 
+              onkeydown="if(event.key==='Enter') addTask()">
+            <button class="add-btn" onclick="addTask()">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Daily Schedule -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">✦ Daily Schedule</span>
+        </div>
+        <div class="card-body">
+          <div class="schedule-grid" id="scheduleGrid"></div>
+          <div class="add-task-row" style="margin-top:16px;border-top:1px solid var(--cream-deep);padding-top:16px;">
+            <select class="priority-select" id="newApptTime" style="min-width:90px;">
+              <option value="" disabled selected>Time</option>
+            </select>
+            <input class="add-task-input" id="newApptText" placeholder="Add appointment..."
+              onkeydown="if(event.key==='Enter') addApptFromInput()">
+            <button class="add-btn" onclick="addApptFromInput()">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">✦ Notes & Journal</span>
+        </div>
+        <div class="card-body">
+          <textarea class="notes-area" id="dailyNotes" placeholder="Thoughts, observations, ideas, gratitude..."></textarea>
+        </div>
+      </div>
+
+    </div>
+    <div class="right-column">
+
+      <!-- Health Stats -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">✦ Health Stats</span>
+        </div>
+        <div class="card-body">
+          <div class="health-grid">
+            <div class="health-stat">
+              <span class="stat-icon">⚖️</span>
+              <span class="stat-label">Weight</span>
+              <input class="stat-input" id="statWeight" type="number" step="0.1" placeholder="—">
+              <span class="stat-unit">lbs</span>
+            </div>
+            <div class="health-stat">
+              <span class="stat-icon">💧</span>
+              <span class="stat-label">Water</span>
+              <input class="stat-input" id="statWater" type="number" placeholder="—">
+              <span class="stat-unit">oz</span>
+            </div>
+            <div class="health-stat">
+              <span class="stat-icon">🩸</span>
+              <span class="stat-label">Glucose</span>
+              <input class="stat-input" id="statGlucose" type="number" placeholder="—">
+              <span class="stat-unit">mg/dL</span>
+            </div>
+            <div class="health-stat">
+              <span class="stat-icon">🏃</span>
+              <span class="stat-label">Exercise</span>
+              <input class="stat-input" id="statExercise" type="number" placeholder="—">
+              <span class="stat-unit">minutes</span>
+            </div>
+            <div class="health-stat">
+              <span class="stat-icon">😴</span>
+              <span class="stat-label">Sleep</span>
+              <input class="stat-input" id="statSleep" type="number" step="0.5" placeholder="—">
+              <span class="stat-unit">hours</span>
+            </div>
+            <div class="health-stat">
+              <span class="stat-icon">❤️</span>
+              <span class="stat-label">Resting HR</span>
+              <input class="stat-input" id="statHR" type="number" placeholder="—">
+              <span class="stat-unit">bpm</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Habit Tracker -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">✦ Habit Tracker</span>
+        </div>
+        <div class="card-body">
+          <div class="habit-list" id="habitList"></div>
+          <div class="add-habit-row">
+            <input class="add-habit-input" id="newHabitInput" placeholder="Add a habit..."
+              onkeydown="if(event.key==='Enter') addHabit()">
+            <button class="add-btn" onclick="addHabit()">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quote of the Day -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">✦ Reflection</span></div>
+        <div class="card-body">
+          <div class="ornamental-rule">— ✦ —</div>
+          <textarea id="reflectionText" 
+            style="width:100%;background:transparent;border:none;font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--ink-mid);resize:none;outline:none;line-height:1.7;min-height:80px;text-align:center;"
+            placeholder="Evening reflection: What went well? What would you do differently?"></textarea>
+          <div class="ornamental-rule">— ✦ —</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- WEEKLY VIEW -->
+<div id="tab-weekly" class="weekly-tab-content">
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header"><span class="card-title">✦ Week at a Glance</span></div>
+    <div class="card-body">
+      <div class="week-grid" id="weekGrid"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">✦ Weekly Priorities</span></div>
+    <div class="card-body">
+      <ul class="task-list" id="weeklyTaskList"></ul>
+      <div class="add-task-row">
+        <select class="priority-select" id="newWeeklyPriority">
+          <option>A</option><option selected>B</option><option>C</option>
+        </select>
+        <input class="add-task-input" id="newWeeklyInput" placeholder="Add a weekly priority..."
+          onkeydown="if(event.key==='Enter') addWeeklyTask()">
+        <button class="add-btn" onclick="addWeeklyTask()">+</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GOALS & VALUES -->
+<div id="tab-goals" class="weekly-tab-content">
+  <div class="goals-section">
+    <div class="goal-card">
+      <h3>Mission Statement</h3>
+      <textarea id="missionStatement" style="width:100%;min-height:120px;background:transparent;border:1px solid var(--cream-deep);border-radius:3px;padding:10px;font-family:'EB Garamond',serif;font-size:15px;color:var(--ink);outline:none;line-height:1.6;resize:vertical;" placeholder="Write your personal mission statement..."></textarea>
+    </div>
+    <div class="goal-card">
+      <h3>Governing Values</h3>
+      <div id="valuesList"></div>
+      <button onclick="addValue()" style="margin-top:10px;background:none;border:1px dashed var(--leather-light);color:var(--leather);padding:5px 14px;border-radius:3px;cursor:pointer;font-family:'EB Garamond',serif;font-size:13px;">+ Add Value</button>
+    </div>
+    <div class="goal-card">
+      <h3>Long-Range Goals</h3>
+      <div id="longGoalsList"></div>
+      <button onclick="addLongGoal()" style="margin-top:10px;background:none;border:1px dashed var(--leather-light);color:var(--leather);padding:5px 14px;border-radius:3px;cursor:pointer;font-family:'EB Garamond',serif;font-size:13px;">+ Add Goal</button>
+    </div>
+    <div class="goal-card">
+      <h3>This Month's Focus</h3>
+      <div id="monthGoalsList"></div>
+      <button onclick="addMonthGoal()" style="margin-top:10px;background:none;border:1px dashed var(--leather-light);color:var(--leather);padding:5px 14px;border-radius:3px;cursor:pointer;font-family:'EB Garamond',serif;font-size:13px;">+ Add Goal</button>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div id="tab-history" class="history-content">
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header">
+      <span class="card-title">✦ Health History</span>
+      <div style="display:flex;gap:8px;">
+        <button class="action-btn secondary" onclick="exportCSV()" style="padding:5px 14px;font-size:13px;">Export CSV</button>
+      </div>
+    </div>
+    <div class="card-body" style="padding:0;">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Weight (lbs)</th>
+            <th>Water (oz)</th>
+            <th>Glucose</th>
+            <th>Exercise (min)</th>
+            <th>Sleep (hrs)</th>
+            <th>HR (bpm)</th>
+            <th>Tasks Done</th>
+          </tr>
+        </thead>
+        <tbody id="historyTableBody">
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ============================================================
+  // STATE
+  // ============================================================
+  let currentDate = new Date();
+  currentDate.setHours(0,0,0,0);
+
+  const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  const HOURS = [
+    '6:00 AM','6:30 AM','7:00 AM','7:30 AM','8:00 AM','8:30 AM',
+    '9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM',
+    '12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM',
+    '3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM',
+    '6:00 PM','6:30 PM','7:00 PM','7:30 PM','8:00 PM','8:30 PM'
+  ];
+
+  function dateKey(d) {
+    return d.toISOString().split('T')[0];
+  }
+
+  function loadDay(key) {
+    const raw = localStorage.getItem('fp_day_' + key);
+    return raw ? JSON.parse(raw) : {
+      focus: '', notes: '', reflection: '',
+      tasks: [], appointments: {},
+      health: { weight:'', water:'', glucose:'', exercise:'', sleep:'', hr:'' },
+      habits: {}
+    };
+  }
+
+  function saveDay(key, data) {
+    localStorage.setItem('fp_day_' + key, JSON.stringify(data));
+  }
+
+  function loadHabits() {
+    const raw = localStorage.getItem('fp_habits');
+    return raw ? JSON.parse(raw) : [
+      { id: 'h1', name: 'Morning meditation', streak: 0 },
+      { id: 'h2', name: 'Read 20 minutes', streak: 0 },
+      { id: 'h3', name: 'Vitamins / Supplements', streak: 0 }
+    ];
+  }
+
+  function saveHabits(habits) {
+    localStorage.setItem('fp_habits', JSON.stringify(habits));
+  }
+
+  function loadWeeklyTasks() {
+    const weekStart = getWeekStart(currentDate);
+    const raw = localStorage.getItem('fp_weekly_' + dateKey(weekStart));
+    return raw ? JSON.parse(raw) : [];
+  }
+
+  function saveWeeklyTasks(tasks) {
+    const weekStart = getWeekStart(currentDate);
+    localStorage.setItem('fp_weekly_' + dateKey(weekStart), JSON.stringify(tasks));
+  }
+
+  function loadGoals() {
+    const raw = localStorage.getItem('fp_goals');
+    return raw ? JSON.parse(raw) : {
+      mission: '',
+      values: ['Faith & Family', 'Integrity', 'Excellence', 'Service'],
+      longGoals: ['', '', '', ''],
+      monthGoals: ['', '', '']
+    };
+  }
+
+  function saveGoals(goals) {
+    localStorage.setItem('fp_goals', JSON.stringify(goals));
+  }
+
+  function getWeekStart(d) {
+    const copy = new Date(d);
+    const day = copy.getDay();
+    copy.setDate(copy.getDate() - day);
+    copy.setHours(0,0,0,0);
+    return copy;
+  }
+
+  // ============================================================
+  // DATE DISPLAY
+  // ============================================================
+  function updateDateDisplay() {
+    document.getElementById('dayName').textContent = DAYS[currentDate.getDay()];
+    document.getElementById('fullDate').textContent =
+      MONTHS[currentDate.getMonth()] + ' ' + currentDate.getDate() + ', ' + currentDate.getFullYear();
+  }
+
+  function changeDate(delta) {
+    saveCurrent();
+    currentDate.setDate(currentDate.getDate() + delta);
+    loadCurrentDay();
+    updateDateDisplay();
+    renderWeekGrid();
+  }
+
+  // ============================================================
+  // TASKS
+  // ============================================================
+  function renderTasks(tasks, listId, deleteFunc, toggleFunc) {
+    const ul = document.getElementById(listId);
+    ul.innerHTML = '';
+    tasks.forEach((task, i) => {
+      const li = document.createElement('li');
+      li.className = 'task-item';
+      li.innerHTML = `
+        <div class="task-checkbox ${task.done ? 'checked' : ''}" onclick="${toggleFunc}(${i})"></div>
+        <span class="task-priority priority-${task.priority}">${task.priority}</span>
+        <span class="task-text ${task.done ? 'done' : ''}" contenteditable="true" 
+          onblur="updateTaskText(${i}, this.textContent, '${listId}')">${task.text}</span>
+        <button class="task-del" onclick="${deleteFunc}(${i})">✕</button>`;
+      ul.appendChild(li);
+    });
+  }
+
+  function addTask() {
+    const input = document.getElementById('newTaskInput');
+    const priority = document.getElementById('newTaskPriority').value;
+    if (!input.value.trim()) return;
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+    data.tasks.push({ text: input.value.trim(), priority, done: false });
+    data.tasks.sort((a,b) => a.priority.localeCompare(b.priority));
+    saveDay(key, data);
+    input.value = '';
+    renderTasks(data.tasks, 'taskList', 'deleteTask', 'toggleTask');
+  }
+
+  function deleteTask(i) {
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+    data.tasks.splice(i, 1);
+    saveDay(key, data);
+    renderTasks(data.tasks, 'taskList', 'deleteTask', 'toggleTask');
+  }
+
+  function toggleTask(i) {
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+    data.tasks[i].done = !data.tasks[i].done;
+    saveDay(key, data);
+    renderTasks(data.tasks, 'taskList', 'deleteTask', 'toggleTask');
+  }
+
+  function updateTaskText(i, text, listId) {
+    if (listId === 'taskList') {
+      const key = dateKey(currentDate);
+      const data = loadDay(key);
+      if (data.tasks[i]) data.tasks[i].text = text;
+      saveDay(key, data);
+    }
+  }
+
+  // Weekly tasks
+  function addWeeklyTask() {
+    const input = document.getElementById('newWeeklyInput');
+    const priority = document.getElementById('newWeeklyPriority').value;
+    if (!input.value.trim()) return;
+    const tasks = loadWeeklyTasks();
+    tasks.push({ text: input.value.trim(), priority, done: false });
+    tasks.sort((a,b) => a.priority.localeCompare(b.priority));
+    saveWeeklyTasks(tasks);
+    input.value = '';
+    renderTasks(tasks, 'weeklyTaskList', 'deleteWeeklyTask', 'toggleWeeklyTask');
+  }
+
+  function deleteWeeklyTask(i) {
+    const tasks = loadWeeklyTasks();
+    tasks.splice(i, 1);
+    saveWeeklyTasks(tasks);
+    renderTasks(tasks, 'weeklyTaskList', 'deleteWeeklyTask', 'toggleWeeklyTask');
+  }
+
+  function toggleWeeklyTask(i) {
+    const tasks = loadWeeklyTasks();
+    tasks[i].done = !tasks[i].done;
+    saveWeeklyTasks(tasks);
+    renderTasks(tasks, 'weeklyTaskList', 'deleteWeeklyTask', 'toggleWeeklyTask');
+  }
+
+  // ============================================================
+  // SCHEDULE
+  // ============================================================
+  function renderSchedule(appointments) {
+    const grid = document.getElementById('scheduleGrid');
+    grid.innerHTML = '';
+
+    // Only show time slots that have appointments
+    const filledSlots = HOURS.filter(hour => appointments[hour] && appointments[hour].length > 0);
+
+    if (filledSlots.length === 0) {
+      // Show a message when no appointments exist
+      grid.innerHTML = '<div style="text-align:center;padding:20px;color:var(--ink-light);font-style:italic;">No appointments scheduled. Use the + button above to add time slots.</div>';
+      return;
+    }
+
+    filledSlots.forEach((hour, idx) => {
+      const slot = document.createElement('div');
+      slot.className = 'time-slot';
+      const appts = (appointments[hour] || []);
+      const apptHTML = appts.map((a, ai) =>
+        `<div class="appointment-entry ${ai%3===1?'gold':ai%3===2?'blue':''}">
+          <span>${a}</span>
+          <button class="appt-del" onclick="deleteAppt('${hour}',${ai})">✕</button>
+        </div>`
+      ).join('');
+      slot.innerHTML = `
+        <div class="time-label">${hour}</div>
+        <div class="time-line">
+          <div class="time-dot"></div>
+          <div class="time-connector"></div>
+        </div>
+        <div class="slot-content">
+          ${apptHTML}
+        </div>`;
+      grid.appendChild(slot);
+    });
+  }
+
+  function addAppt(hour, text) {
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+    if (!data.appointments[hour]) data.appointments[hour] = [];
+    data.appointments[hour].push(text.trim());
+    saveDay(key, data);
+    renderSchedule(data.appointments);
+  }
+
+  function addApptFromInput() {
+    const timeSelect = document.getElementById('newApptTime');
+    const textInput = document.getElementById('newApptText');
+    const time = timeSelect.value;
+    const text = textInput.value.trim();
+
+    if (!time || !text) {
+      showToast('Please select a time and enter appointment details');
+      return;
+    }
+
+    addAppt(time, text);
+    textInput.value = '';
+    timeSelect.selectedIndex = 0;
+    populateTimeDropdown(); // Refresh to update available times
+  }
+
+  function populateTimeDropdown() {
+    const select = document.getElementById('newApptTime');
+    if (!select) return;
+
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+
+    select.innerHTML = '<option value="" disabled selected>Time</option>';
+    HOURS.forEach(hour => {
+      const option = document.createElement('option');
+      option.value = hour;
+      option.textContent = hour;
+      select.appendChild(option);
+    });
+  }
+
+  function deleteAppt(hour, idx) {
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+    data.appointments[hour].splice(idx, 1);
+    if (data.appointments[hour].length === 0) {
+      delete data.appointments[hour]; // Remove empty time slot
+    }
+    saveDay(key, data);
+    renderSchedule(data.appointments);
+    populateTimeDropdown(); // Refresh dropdown
+  }
+
+  // ============================================================
+  // HABITS
+  // ============================================================
+  function renderHabits(habits, dayHabits) {
+    const list = document.getElementById('habitList');
+    list.innerHTML = '';
+    habits.forEach((h, i) => {
+      const done = dayHabits[h.id] || false;
+      const row = document.createElement('div');
+      row.className = 'habit-row';
+      row.innerHTML = `
+        <span class="habit-name">${h.name}</span>
+        <div class="habit-check ${done ? 'done' : ''}" onclick="toggleHabit('${h.id}', ${i})">
+          ${done ? '✓' : ''}
+        </div>
+        <span class="habit-streak">${h.streak > 0 ? '🔥' + h.streak : ''}</span>
+        <button onclick="deleteHabit(${i})" style="background:none;border:none;color:var(--ink-light);cursor:pointer;font-size:12px;opacity:0.5;" title="Remove">✕</button>`;
+      list.appendChild(row);
+    });
+  }
+
+  function toggleHabit(id, idx) {
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+    data.habits[id] = !data.habits[id];
+    saveDay(key, data);
+    const habits = loadHabits();
+    // Update streak (simplified)
+    if (data.habits[id]) {
+      habits[idx].streak = (habits[idx].streak || 0) + 1;
+    } else {
+      habits[idx].streak = Math.max(0, (habits[idx].streak || 0) - 1);
+    }
+    saveHabits(habits);
+    renderHabits(habits, data.habits);
+  }
+
+  function addHabit() {
+    const input = document.getElementById('newHabitInput');
+    if (!input.value.trim()) return;
+    const habits = loadHabits();
+    habits.push({ id: 'h' + Date.now(), name: input.value.trim(), streak: 0 });
+    saveHabits(habits);
+    input.value = '';
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+    renderHabits(habits, data.habits);
+  }
+
+  function deleteHabit(i) {
+    const habits = loadHabits();
+    habits.splice(i, 1);
+    saveHabits(habits);
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+    renderHabits(habits, data.habits);
+  }
+
+  // ============================================================
+  // WEEK GRID
+  // ============================================================
+  function renderWeekGrid() {
+    const grid = document.getElementById('weekGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    const weekStart = getWeekStart(currentDate);
+    const today = new Date(); today.setHours(0,0,0,0);
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(weekStart);
+      d.setDate(d.getDate() + i);
+      const isToday = d.getTime() === today.getTime();
+      const dData = loadDay(dateKey(d));
+      const taskPreviews = dData.tasks.slice(0,3).map(t =>
+        `<div class="wdc-task">${t.priority}: ${t.text}</div>`).join('');
+      const taskCount = dData.tasks.length;
+      const card = document.createElement('div');
+      card.className = 'week-day-card' + (isToday ? ' today' : '');
+      card.innerHTML = `
+        <div class="wdc-name">${DAYS[d.getDay()].substring(0,3)}</div>
+        <div class="wdc-num">${d.getDate()}</div>
+        ${taskPreviews}
+        ${taskCount > 3 ? `<div class="wdc-task-count">+${taskCount-3} more</div>` : ''}`;
+      card.onclick = () => {
+        saveCurrent();
+        currentDate = new Date(d);
+        loadCurrentDay();
+        updateDateDisplay();
+        switchTab('daily');
+      };
+      grid.appendChild(card);
+    }
+  }
+
+  // ============================================================
+  // GOALS
+  // ============================================================
+  function renderGoals() {
+    const goals = loadGoals();
+    document.getElementById('missionStatement').value = goals.mission || '';
+
+    const vList = document.getElementById('valuesList');
+    vList.innerHTML = '';
+    (goals.values || []).forEach((v, i) => {
+      const row = document.createElement('div');
+      row.className = 'goal-item';
+      row.innerHTML = `<div class="goal-bullet"></div>
+        <input class="goal-text" value="${v}" placeholder="A core value..." 
+          onblur="updateValue(${i}, this.value)">`;
+      vList.appendChild(row);
+    });
+
+    const lgList = document.getElementById('longGoalsList');
+    lgList.innerHTML = '';
+    (goals.longGoals || []).forEach((g, i) => {
+      const row = document.createElement('div');
+      row.className = 'goal-item';
+      row.innerHTML = `<div class="goal-bullet"></div>
+        <input class="goal-text" value="${g}" placeholder="A long-range goal..."
+          onblur="updateLongGoal(${i}, this.value)">`;
+      lgList.appendChild(row);
+    });
+
+    const mgList = document.getElementById('monthGoalsList');
+    mgList.innerHTML = '';
+    (goals.monthGoals || []).forEach((g, i) => {
+      const row = document.createElement('div');
+      row.className = 'goal-item';
+      row.innerHTML = `<div class="goal-bullet"></div>
+        <input class="goal-text" value="${g}" placeholder="This month's focus..."
+          onblur="updateMonthGoal(${i}, this.value)">`;
+      mgList.appendChild(row);
+    });
+  }
+
+  function updateValue(i, val) {
+    const goals = loadGoals();
+    goals.values[i] = val;
+    saveGoals(goals);
+  }
+  function addValue() {
+    const goals = loadGoals();
+    goals.values.push('');
+    saveGoals(goals);
+    renderGoals();
+  }
+  function updateLongGoal(i, val) {
+    const goals = loadGoals();
+    goals.longGoals[i] = val;
+    saveGoals(goals);
+  }
+  function addLongGoal() {
+    const goals = loadGoals();
+    goals.longGoals.push('');
+    saveGoals(goals);
+    renderGoals();
+  }
+  function updateMonthGoal(i, val) {
+    const goals = loadGoals();
+    goals.monthGoals[i] = val;
+    saveGoals(goals);
+  }
+  function addMonthGoal() {
+    const goals = loadGoals();
+    goals.monthGoals.push('');
+    saveGoals(goals);
+    renderGoals();
+  }
+
+  document.getElementById('missionStatement').addEventListener('blur', function() {
+    const goals = loadGoals();
+    goals.mission = this.value;
+    saveGoals(goals);
+  });
+
+  // ============================================================
+  // HISTORY
+  // ============================================================
+  function renderHistory() {
+    const tbody = document.getElementById('historyTableBody');
+    tbody.innerHTML = '';
+    const keys = Object.keys(localStorage)
+      .filter(k => k.startsWith('fp_day_'))
+      .map(k => k.replace('fp_day_', ''))
+      .sort().reverse();
+    keys.slice(0, 60).forEach(key => {
+      const data = loadDay(key);
+      const h = data.health || {};
+      const done = (data.tasks || []).filter(t => t.done).length;
+      const total = (data.tasks || []).length;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${key}</td>
+        <td>${h.weight || '—'}</td>
+        <td>${h.water || '—'}</td>
+        <td>${h.glucose || '—'}</td>
+        <td>${h.exercise || '—'}</td>
+        <td>${h.sleep || '—'}</td>
+        <td>${h.hr || '—'}</td>
+        <td>${total > 0 ? done + '/' + total : '—'}</td>`;
+      tbody.appendChild(tr);
+    });
+    if (keys.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--ink-light);font-style:italic;">No history yet. Start logging your daily data.</td></tr>`;
+    }
+  }
+
+  // ============================================================
+  // SAVE / LOAD
+  // ============================================================
+  function saveCurrent() {
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+    data.focus = document.getElementById('dailyFocus').value;
+    data.notes = document.getElementById('dailyNotes').value;
+    data.reflection = document.getElementById('reflectionText').value;
+    data.health = {
+      weight: document.getElementById('statWeight').value,
+      water: document.getElementById('statWater').value,
+      glucose: document.getElementById('statGlucose').value,
+      exercise: document.getElementById('statExercise').value,
+      sleep: document.getElementById('statSleep').value,
+      hr: document.getElementById('statHR').value
+    };
+    saveDay(key, data);
+  }
+
+  function loadCurrentDay() {
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+    document.getElementById('dailyFocus').value = data.focus || '';
+    document.getElementById('dailyNotes').value = data.notes || '';
+    document.getElementById('reflectionText').value = data.reflection || '';
+    const h = data.health || {};
+    document.getElementById('statWeight').value = h.weight || '';
+    document.getElementById('statWater').value = h.water || '';
+    document.getElementById('statGlucose').value = h.glucose || '';
+    document.getElementById('statExercise').value = h.exercise || '';
+    document.getElementById('statSleep').value = h.sleep || '';
+    document.getElementById('statHR').value = h.hr || '';
+    renderTasks(data.tasks || [], 'taskList', 'deleteTask', 'toggleTask');
+    renderSchedule(data.appointments || {});
+    populateTimeDropdown();
+    const habits = loadHabits();
+    renderHabits(habits, data.habits || {});
+  }
+
+  function saveData() {
+    saveCurrent();
+    showToast('Saved ✓');
+  }
+
+  // Auto-save every 30 seconds
+  setInterval(saveCurrent, 30000);
+
+  // ============================================================
+  // TABS
+  // ============================================================
+  function switchTab(name) {
+    // Hide all
+    document.getElementById('tab-daily').classList.add('hidden');
+    document.getElementById('tab-weekly').classList.remove('active');
+    document.getElementById('tab-goals').classList.remove('active');
+    document.getElementById('tab-history').classList.remove('active');
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+    saveCurrent();
+
+    if (name === 'daily') {
+      document.getElementById('tab-daily').classList.remove('hidden');
+      document.querySelectorAll('.tab')[0].classList.add('active');
+    } else if (name === 'weekly') {
+      document.getElementById('tab-weekly').classList.add('active');
+      document.querySelectorAll('.tab')[1].classList.add('active');
+      renderWeekGrid();
+      const tasks = loadWeeklyTasks();
+      renderTasks(tasks, 'weeklyTaskList', 'deleteWeeklyTask', 'toggleWeeklyTask');
+    } else if (name === 'goals') {
+      document.getElementById('tab-goals').classList.add('active');
+      document.querySelectorAll('.tab')[2].classList.add('active');
+      renderGoals();
+    } else if (name === 'history') {
+      document.getElementById('tab-history').classList.add('active');
+      document.querySelectorAll('.tab')[3].classList.add('active');
+      renderHistory();
+    }
+  }
+
+  // ============================================================
+  // EXPORT CSV
+  // ============================================================
+  function exportCSV() {
+    const keys = Object.keys(localStorage)
+      .filter(k => k.startsWith('fp_day_'))
+      .map(k => k.replace('fp_day_', ''))
+      .sort();
+
+    const rows = [['Date','Focus','Weight(lbs)','Water(oz)','Glucose(mg/dL)','Exercise(min)','Sleep(hrs)','HR(bpm)','Tasks Total','Tasks Done','Notes']];
+    keys.forEach(key => {
+      const d = loadDay(key);
+      const h = d.health || {};
+      const total = (d.tasks||[]).length;
+      const done = (d.tasks||[]).filter(t=>t.done).length;
+      const notes = (d.notes||'').replace(/"/g, '""').replace(/\n/g, ' ');
+      const focus = (d.focus||'').replace(/"/g, '""');
+      rows.push([key, `"${focus}"`, h.weight||'', h.water||'', h.glucose||'',
+        h.exercise||'', h.sleep||'', h.hr||'', total, done, `"${notes}"`]);
+    });
+
+    // Also export tasks
+    const taskRows = [['Date','Priority','Task','Done']];
+    keys.forEach(key => {
+      const d = loadDay(key);
+      (d.tasks||[]).forEach(t => {
+        const txt = t.text.replace(/"/g, '""');
+        taskRows.push([key, t.priority, `"${txt}"`, t.done ? 'Yes' : 'No']);
+      });
+    });
+
+    const csvContent = rows.map(r => r.join(',')).join('\n');
+    const tasksContent = taskRows.map(r => r.join(',')).join('\n');
+
+    download('dailyworks-health-log.csv', csvContent);
+    setTimeout(() => download('dailyworks-tasks.csv', tasksContent), 300);
+    showToast('Exported 2 CSV files ✓');
+  }
+
+  function download(filename, content) {
+    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ============================================================
+  // TOAST
+  // ============================================================
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  updateDateDisplay();
+  loadCurrentDay();
+  populateTimeDropdown();
+
+  // Keyboard shortcut: Ctrl+S to save
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+      saveData();
+    }
+  });
+</script>
+</body>
+</html>

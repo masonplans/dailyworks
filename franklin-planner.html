@@ -1335,6 +1335,559 @@
     box-shadow: 0 0 0 2px var(--ink);
   }
 
+  /* WEEKLY REVIEW */
+  .review-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--cream-dark);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .review-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--leather) 0%, var(--gold) 100%);
+    transition: width 0.3s ease;
+  }
+
+  .review-step-indicator {
+    text-align: center;
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    margin-bottom: 32px;
+  }
+
+  .review-step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--leather-dark);
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .review-step-instruction {
+    font-family: 'EB Garamond', serif;
+    font-size: 17px;
+    font-style: italic;
+    color: var(--ink-mid);
+    text-align: center;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .review-step-content {
+    margin-bottom: 40px;
+    min-height: 300px;
+  }
+
+  .review-nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 32px;
+    border-top: 2px solid var(--cream-deep);
+  }
+
+  .review-btn {
+    padding: 12px 32px;
+    border-radius: 4px;
+    font-family: 'EB Garamond', serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .review-btn-back {
+    background: transparent;
+    border: 1px solid var(--leather-light);
+    color: var(--leather);
+  }
+
+  .review-btn-back:hover {
+    background: var(--cream-dark);
+  }
+
+  .review-btn-next {
+    background: var(--leather);
+    color: var(--cream);
+  }
+
+  .review-btn-next:hover {
+    background: var(--leather-dark);
+  }
+
+  .review-btn-complete {
+    background: var(--gold);
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .review-btn-complete:hover {
+    background: var(--gold-light);
+  }
+
+  .review-start-screen {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .review-item-count {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    color: var(--leather);
+    margin-bottom: 20px;
+  }
+
+  .review-inbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+
+  .review-inbox-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    background: var(--cream-dark);
+    border-radius: 4px;
+  }
+
+  .review-inbox-text {
+    flex: 1;
+    font-family: 'EB Garamond', serif;
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  .review-inbox-item-title {
+    flex: 1;
+    font-family: 'EB Garamond', serif;
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  .review-inbox-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .review-inbox-btn {
+    background: white;
+    border: 1px solid var(--cream-deep);
+    color: var(--leather);
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-family: 'EB Garamond', serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .review-inbox-btn:hover {
+    background: var(--leather);
+    color: white;
+  }
+
+  .review-week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+    margin-top: 1.5rem;
+  }
+
+  .review-day-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .review-day-card {
+    background: var(--cream-dark);
+    border-radius: 4px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .review-day-card:hover {
+    background: var(--cream-deep);
+    transform: translateY(-2px);
+  }
+
+  .review-day-name {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    margin-bottom: 4px;
+  }
+
+  .review-day-date {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--leather-dark);
+    margin-bottom: 8px;
+  }
+
+  .review-day-stats {
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .review-completion-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(139, 94, 60, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .review-completion-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--leather) 0%, var(--gold) 100%);
+    transition: width 0.3s ease;
+  }
+
+  .review-progress-mini {
+    width: 100%;
+    height: 6px;
+    background: var(--cream);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+
+  .review-progress-mini-fill {
+    height: 100%;
+    background: var(--leather);
+  }
+
+  .review-textarea {
+    width: 100%;
+    min-height: 120px;
+    background: white;
+    border: 1px solid var(--cream-deep);
+    border-radius: 4px;
+    padding: 16px;
+    font-family: 'EB Garamond', serif;
+    font-size: 15px;
+    color: var(--ink);
+    resize: vertical;
+    outline: none;
+    line-height: 1.6;
+  }
+
+  .review-textarea-large {
+    min-height: 160px;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-style: italic;
+  }
+
+  .review-text-label {
+    display: block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    margin-bottom: 8px;
+  }
+
+  .review-empty {
+    text-align: center;
+    padding: 2rem;
+    color: var(--ink-light);
+    font-family: 'EB Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  .review-label {
+    display: block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    margin-bottom: 8px;
+  }
+
+  .review-plan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 1.5rem;
+  }
+
+  .review-plan-card {
+    background: var(--cream-dark);
+    border-radius: 4px;
+    padding: 12px;
+  }
+
+  .review-plan-day {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--leather-dark);
+    margin-bottom: 4px;
+  }
+
+  .review-plan-date {
+    font-family: 'EB Garamond', serif;
+    font-size: 13px;
+    color: var(--ink-light);
+    margin-bottom: 8px;
+  }
+
+  .review-plan-input {
+    width: 100%;
+    min-height: 80px;
+    background: white;
+    border: 1px solid var(--cream-deep);
+    border-radius: 4px;
+    padding: 8px;
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    color: var(--ink);
+    resize: vertical;
+  }
+
+  .review-mission-box {
+    background: rgba(201, 168, 76, 0.1);
+    border-left: 3px solid var(--gold);
+    padding: 16px;
+    border-radius: 4px;
+  }
+
+  .review-score-slider {
+    margin-top: 1rem;
+  }
+
+  .review-project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 1rem;
+  }
+
+  .review-project-card {
+    background: var(--cream-dark);
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .review-number-input {
+    width: 100px;
+    height: 100px;
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    text-align: center;
+    background: white;
+    border: 2px solid var(--leather-light);
+    border-radius: 8px;
+    color: var(--leather-dark);
+    outline: none;
+  }
+
+  .review-gratitude-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .review-completion-screen {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .review-completion-icon {
+    font-size: 72px;
+    margin-bottom: 24px;
+  }
+
+  .review-habit-grid {
+    display: grid;
+    grid-template-columns: 200px repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+    font-size: 13px;
+  }
+
+  .review-habit-name {
+    font-family: 'EB Garamond', serif;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  .review-habit-day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+  }
+
+  .review-habit-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--cream-deep);
+  }
+
+  .review-habit-circle.filled {
+    background: var(--green-accent);
+    border-color: var(--green-accent);
+  }
+
+  .review-habit-row {
+    display: grid;
+    grid-template-columns: 200px 1fr auto;
+    gap: 16px;
+    align-items: center;
+    padding: 12px;
+    background: var(--cream-dark);
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .review-habit-checks {
+    display: flex;
+    gap: 8px;
+  }
+
+  .review-habit-check {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background: rgba(139, 94, 60, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    color: var(--ink-light);
+  }
+
+  .review-habit-check.checked {
+    background: var(--green-accent);
+    color: white;
+  }
+
+  .review-habit-consistency {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--leather);
+    min-width: 60px;
+    text-align: right;
+  }
+
+  .review-health-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .review-health-stat {
+    background: var(--cream-dark);
+    border-radius: 4px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .review-health-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    margin-bottom: 8px;
+  }
+
+  .review-health-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--leather-dark);
+  }
+
+  .review-health-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--gold);
+    text-align: center;
+    margin: 1rem 0;
+  }
+
+  .review-project-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .review-project-progress {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    color: var(--ink-light);
+  }
+
+  .review-project-outcome {
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    color: var(--ink-light);
+    font-style: italic;
+    margin-top: 8px;
+  }
+
+  .review-intention-display {
+    background: rgba(201, 168, 76, 0.1);
+    border: 2px solid var(--gold);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 2rem auto;
+    max-width: 600px;
+  }
+
+  .review-intention-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-style: italic;
+    color: var(--leather-dark);
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+
+  .review-completion-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
   /* BLOCK DAY DIALOG */
   .block-type-btn:hover {
     border-color: var(--leather) !important;
@@ -1383,6 +1936,7 @@
 <nav class="tab-nav">
   <button class="tab active" onclick="switchTab('daily')">Daily</button>
   <button class="tab" onclick="switchTab('weekly')">Weekly</button>
+  <button class="tab" onclick="switchTab('weeklyreview')">Weekly Review</button>
   <button class="tab" onclick="switchTab('monthly')">Monthly</button>
   <button class="tab" onclick="switchTab('masterlist')">Master List</button>
   <button class="tab" onclick="switchTab('projects')">Projects</button>
@@ -1585,6 +2139,15 @@
           onkeydown="if(event.key==='Enter') addWeeklyTask()">
         <button class="add-btn" onclick="addWeeklyTask()">+</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- WEEKLY REVIEW -->
+<div id="tab-weeklyreview" class="weekly-tab-content">
+  <div class="card">
+    <div class="card-body">
+      <div id="weeklyReviewContainer"></div>
     </div>
   </div>
 </div>
@@ -1870,6 +2433,12 @@
 
   function dateKey(d) {
     return d.toISOString().split('T')[0];
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
   }
 
   function loadDay(key) {
@@ -2618,6 +3187,7 @@
     document.getElementById('tab-daily').classList.add('hidden');
     document.getElementById('tab-weekly').classList.remove('active');
     document.getElementById('tab-monthly').classList.remove('active');
+    document.getElementById('tab-weeklyreview').classList.remove('active');
     document.getElementById('tab-masterlist').classList.remove('active');
     document.getElementById('tab-projects').classList.remove('active');
     document.getElementById('tab-goals').classList.remove('active');
@@ -2642,13 +3212,17 @@
       viewMonth.setDate(1);
       viewMonth.setHours(0,0,0,0);
       renderMonthCalendar();
+    } else if (name === 'weeklyreview') {
+      document.getElementById('tab-weeklyreview').classList.add('active');
+      document.querySelectorAll('.tab')[3].classList.add('active');
+      renderWeeklyReview();
     } else if (name === 'masterlist') {
       document.getElementById('tab-masterlist').classList.add('active');
-      document.querySelectorAll('.tab')[3].classList.add('active');
+      document.querySelectorAll('.tab')[4].classList.add('active');
       renderMasterList();
     } else if (name === 'projects') {
       document.getElementById('tab-projects').classList.add('active');
-      document.querySelectorAll('.tab')[4].classList.add('active');
+      document.querySelectorAll('.tab')[5].classList.add('active');
       // Reset to list view when switching to projects tab
       document.getElementById('projectListView').style.display = 'block';
       document.getElementById('projectDetailView').style.display = 'none';
@@ -2656,11 +3230,11 @@
       renderProjectList();
     } else if (name === 'goals') {
       document.getElementById('tab-goals').classList.add('active');
-      document.querySelectorAll('.tab')[5].classList.add('active');
+      document.querySelectorAll('.tab')[6].classList.add('active');
       renderGoals();
     } else if (name === 'history') {
       document.getElementById('tab-history').classList.add('active');
-      document.querySelectorAll('.tab')[6].classList.add('active');
+      document.querySelectorAll('.tab')[7].classList.add('active');
       renderHistory();
     }
   }
@@ -3439,6 +4013,496 @@
   function filterByGlobalTag(items, getTagIdFunc) {
     if (globalTagFilter === null) return items;
     return items.filter(item => getTagIdFunc(item) === globalTagFilter);
+  }
+
+  // ============================================================
+  // WEEKLY REVIEW
+  // ============================================================
+
+  function getWeekStartSunday(date = new Date()) {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    const day = d.getDay();
+    const diff = day; // Sunday is 0
+    d.setDate(d.getDate() - diff);
+    return d;
+  }
+
+  function loadWeeklyReview() {
+    const weekStart = getWeekStartSunday();
+    const key = 'fp_weekly_review_' + dateKey(weekStart);
+    const stored = localStorage.getItem(key);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+    return {
+      weekStart: dateKey(weekStart),
+      currentStep: 1,
+      completed: false,
+      step1_processedItems: [],
+      step4_alignment: '',
+      step4_score: 5,
+      step5_plans: {},
+      step7_intention: '',
+      step7_gratitude: '',
+      completedAt: null
+    };
+  }
+
+  function saveWeeklyReview(data) {
+    const weekStart = getWeekStartSunday();
+    const key = 'fp_weekly_review_' + dateKey(weekStart);
+    localStorage.setItem(key, JSON.stringify(data));
+  }
+
+  let reviewState = null;
+
+  function renderWeeklyReview() {
+    reviewState = loadWeeklyReview();
+    const container = document.getElementById('weeklyReviewContainer');
+
+    if (reviewState.completed) {
+      renderCompletedReview();
+    } else {
+      renderReviewStep(reviewState.currentStep);
+    }
+  }
+
+  function renderReviewStep(step) {
+    const container = document.getElementById('weeklyReviewContainer');
+    const progress = ((step - 1) / 7) * 100;
+
+    let stepContent = '';
+    switch(step) {
+      case 1: stepContent = renderStep1_ClearInbox(); break;
+      case 2: stepContent = renderStep2_ReviewLastWeek(); break;
+      case 3: stepContent = renderStep3_ReviewProjects(); break;
+      case 4: stepContent = renderStep4_GoalsAlignment(); break;
+      case 5: stepContent = renderStep5_PlanNextWeek(); break;
+      case 6: stepContent = renderStep6_HabitHealth(); break;
+      case 7: stepContent = renderStep7_Intention(); break;
+    }
+
+    container.innerHTML = `
+      <div class="review-progress-bar">
+        <div class="review-progress-fill" style="width:${progress}%"></div>
+      </div>
+      <div style="margin-top:2rem">
+        ${stepContent}
+      </div>
+      <div class="review-nav-buttons">
+        ${step > 1 ? '<button class="review-btn" onclick="prevStep()">← Back</button>' : '<div></div>'}
+        ${step < 7 ? '<button class="review-btn" onclick="nextStep()">Next →</button>' :
+                     '<button class="review-btn-complete" onclick="completeReview()">Complete Review</button>'}
+      </div>
+    `;
+  }
+
+  function renderStep1_ClearInbox() {
+    const masterList = loadMasterList();
+    const inboxItems = masterList.filter(item => item.status === 'Inbox');
+
+    return `
+      <h2 class="review-step-title">Step 1: Clear Your Inbox</h2>
+      <p class="review-step-instruction">Process all items in your Inbox. Decide what to do with each one.</p>
+
+      ${inboxItems.length === 0 ?
+        '<div class="review-empty">✓ Your inbox is clear!</div>' :
+        `<div class="review-inbox-list">
+          ${inboxItems.map(item => `
+            <div class="review-inbox-item">
+              <div class="review-inbox-text">${escapeHtml(item.text)}</div>
+              <div class="review-inbox-actions">
+                <button class="review-inbox-btn" onclick="processInboxItem('${item.id}', 'Schedule')">Schedule</button>
+                <button class="review-inbox-btn" onclick="processInboxItem('${item.id}', 'Someday')">Someday</button>
+                <button class="review-inbox-btn" onclick="processInboxItem('${item.id}', 'Complete')">Done</button>
+                <button class="review-inbox-btn" onclick="processInboxItem('${item.id}', 'Delete')" style="background:#8b2c2c">Delete</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>`
+      }
+    `;
+  }
+
+  function processInboxItem(itemId, action) {
+    const masterList = loadMasterList();
+    const itemIndex = masterList.findIndex(i => i.id === itemId);
+    if (itemIndex === -1) return;
+
+    const item = masterList[itemIndex];
+
+    if (action === 'Schedule') {
+      const dateStr = prompt('Enter date to schedule (YYYY-MM-DD or leave blank for today):');
+      const targetDate = dateStr && dateStr.trim() ? dateStr.trim() : dateKey(new Date());
+
+      const dayData = loadDay(targetDate);
+      dayData.tasks.push({
+        text: item.text,
+        priority: item.priority,
+        done: false,
+        tagId: item.tagId || null
+      });
+      saveDay(targetDate, dayData);
+
+      item.status = 'Scheduled';
+      item.dueDate = targetDate;
+    } else if (action === 'Someday') {
+      item.status = 'Someday';
+    } else if (action === 'Complete') {
+      item.status = 'Complete';
+    } else if (action === 'Delete') {
+      masterList.splice(itemIndex, 1);
+      saveMasterList(masterList);
+      renderReviewStep(1);
+      return;
+    }
+
+    saveMasterList(masterList);
+
+    if (!reviewState.step1_processedItems.includes(itemId)) {
+      reviewState.step1_processedItems.push(itemId);
+      saveWeeklyReview(reviewState);
+    }
+
+    renderReviewStep(1);
+  }
+
+  function renderStep2_ReviewLastWeek() {
+    const weekStart = getWeekStartSunday();
+    const days = [];
+
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(weekStart);
+      d.setDate(d.getDate() - 7 + i);
+      const key = dateKey(d);
+      const data = loadDay(key);
+      const totalTasks = data.tasks.length;
+      const completedTasks = data.tasks.filter(t => t.done).length;
+
+      days.push({
+        date: d,
+        key: key,
+        total: totalTasks,
+        completed: completedTasks,
+        dayName: d.toLocaleDateString('en-US', { weekday: 'short' })
+      });
+    }
+
+    return `
+      <h2 class="review-step-title">Step 2: Review Last Week</h2>
+      <p class="review-step-instruction">Reflect on what you accomplished last week.</p>
+
+      <div class="review-week-grid">
+        ${days.map(day => `
+          <div class="review-day-card">
+            <div class="review-day-name">${day.dayName}</div>
+            <div class="review-day-date">${day.date.getMonth()+1}/${day.date.getDate()}</div>
+            <div class="review-day-stats">
+              ${day.completed}/${day.total} tasks
+            </div>
+            <div class="review-completion-bar">
+              <div class="review-completion-fill" style="width:${day.total > 0 ? (day.completed/day.total*100) : 0}%"></div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div style="margin-top:2rem">
+        <label class="review-label">What went well last week?</label>
+        <textarea class="review-textarea" id="lastWeekWins" placeholder="Celebrate your wins...">${reviewState.step2_wins || ''}</textarea>
+
+        <label class="review-label" style="margin-top:1rem">What could be improved?</label>
+        <textarea class="review-textarea" id="lastWeekImprove" placeholder="Learning opportunities...">${reviewState.step2_improve || ''}</textarea>
+      </div>
+    `;
+  }
+
+  function renderStep3_ReviewProjects() {
+    const projects = loadProjects();
+    const activeProjects = projects.filter(p => !p.archived);
+
+    return `
+      <h2 class="review-step-title">Step 3: Review Projects</h2>
+      <p class="review-step-instruction">Check in on each active project. Are they moving forward?</p>
+
+      ${activeProjects.length === 0 ?
+        '<div class="review-empty">No active projects</div>' :
+        `<div class="review-project-list">
+          ${activeProjects.map(project => {
+            const totalActions = project.actions.length;
+            const completedActions = project.actions.filter(a => a.done).length;
+            const progressPct = totalActions > 0 ? (completedActions / totalActions * 100) : 0;
+
+            return `
+              <div class="review-project-card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
+                  <div class="review-project-title" style="color:${project.color}">${escapeHtml(project.name)}</div>
+                  <div class="review-project-progress">${completedActions}/${totalActions}</div>
+                </div>
+                <div class="review-completion-bar">
+                  <div class="review-completion-fill" style="width:${progressPct}%;background:${project.color}"></div>
+                </div>
+                ${project.outcome ? `<div class="review-project-outcome">${escapeHtml(project.outcome)}</div>` : ''}
+              </div>
+            `;
+          }).join('')}
+        </div>`
+      }
+
+      <div style="margin-top:2rem">
+        <label class="review-label">Project reflections:</label>
+        <textarea class="review-textarea" id="projectReflections" placeholder="Which projects need more attention? Any new projects to start?">${reviewState.step3_reflections || ''}</textarea>
+      </div>
+    `;
+  }
+
+  function renderStep4_GoalsAlignment() {
+    const goalsData = loadGoals();
+
+    return `
+      <h2 class="review-step-title">Step 4: Goals & Values Alignment</h2>
+      <p class="review-step-instruction">Reflect on whether your week aligned with your mission and values.</p>
+
+      ${goalsData.mission ?
+        `<div class="review-mission-box">
+          <div class="review-label">Your Mission:</div>
+          <div style="font-style:italic;margin-top:0.5rem">"${escapeHtml(goalsData.mission)}"</div>
+        </div>` : ''
+      }
+
+      <div style="margin-top:2rem">
+        <label class="review-label">How well did this week align with your mission and values?</label>
+        <textarea class="review-textarea" id="alignmentReflection" placeholder="Reflect on alignment...">${reviewState.step4_alignment || ''}</textarea>
+
+        <div style="margin-top:1.5rem">
+          <label class="review-label">Alignment Score (1-10):</label>
+          <div class="review-score-slider">
+            <input type="range" min="1" max="10" value="${reviewState.step4_score || 5}"
+              id="alignmentScore" oninput="document.getElementById('scoreValue').textContent = this.value"
+              style="width:100%;margin-top:0.5rem">
+            <div id="scoreValue" style="text-align:center;font-size:2rem;color:var(--gold);margin-top:0.5rem">${reviewState.step4_score || 5}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderStep5_PlanNextWeek() {
+    const weekStart = getWeekStartSunday();
+    const nextWeekStart = new Date(weekStart);
+    nextWeekStart.setDate(nextWeekStart.getDate() + 7);
+
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(nextWeekStart);
+      d.setDate(d.getDate() + i);
+      const key = dateKey(d);
+      days.push({
+        date: d,
+        key: key,
+        dayName: d.toLocaleDateString('en-US', { weekday: 'long' })
+      });
+    }
+
+    return `
+      <h2 class="review-step-title">Step 5: Plan Next Week</h2>
+      <p class="review-step-instruction">What are your key focuses for each day next week?</p>
+
+      <div class="review-plan-grid">
+        ${days.map(day => `
+          <div class="review-plan-card">
+            <div class="review-plan-day">${day.dayName}</div>
+            <div class="review-plan-date">${day.date.getMonth()+1}/${day.date.getDate()}</div>
+            <textarea class="review-plan-input" id="plan_${day.key}"
+              placeholder="Key focuses for this day...">${reviewState.step5_plans[day.key] || ''}</textarea>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function renderStep6_HabitHealth() {
+    const weekStart = getWeekStartSunday();
+    const goalsData = loadGoals();
+    const habits = goalsData.habits || [];
+
+    const lastWeekDays = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(weekStart);
+      d.setDate(d.getDate() - 7 + i);
+      lastWeekDays.push({
+        date: d,
+        key: dateKey(d),
+        dayName: d.toLocaleDateString('en-US', { weekday: 'short' })
+      });
+    }
+
+    let totalHealth = 0;
+    let healthCount = 0;
+    lastWeekDays.forEach(day => {
+      const data = loadDay(day.key);
+      if (data.health && data.health.score) {
+        totalHealth += parseInt(data.health.score);
+        healthCount++;
+      }
+    });
+    const avgHealth = healthCount > 0 ? (totalHealth / healthCount).toFixed(1) : 'N/A';
+
+    return `
+      <h2 class="review-step-title">Step 6: Habits & Health</h2>
+      <p class="review-step-instruction">Review your habit consistency and health for last week.</p>
+
+      ${habits.length > 0 ? `
+        <div class="review-habit-grid">
+          ${habits.map(habit => {
+            const checks = lastWeekDays.map(day => {
+              const data = loadDay(day.key);
+              const checked = data.habitChecks && data.habitChecks[habit.id];
+              return { day: day.dayName, checked };
+            });
+            const consistency = (checks.filter(c => c.checked).length / 7 * 100).toFixed(0);
+
+            return `
+              <div class="review-habit-row">
+                <div class="review-habit-name">${escapeHtml(habit.text)}</div>
+                <div class="review-habit-checks">
+                  ${checks.map(c => `
+                    <div class="review-habit-check ${c.checked ? 'checked' : ''}">${c.day.charAt(0)}</div>
+                  `).join('')}
+                </div>
+                <div class="review-habit-consistency">${consistency}%</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      ` : '<div class="review-empty">No habits tracked</div>'}
+
+      <div style="margin-top:2rem">
+        <div class="review-health-summary">
+          <div class="review-label">Average Health Score Last Week:</div>
+          <div class="review-health-score">${avgHealth}/10</div>
+        </div>
+
+        <label class="review-label" style="margin-top:1.5rem">Health & Energy Reflections:</label>
+        <textarea class="review-textarea" id="healthReflections" placeholder="How was your energy? Sleep? Exercise? Nutrition?">${reviewState.step6_health || ''}</textarea>
+      </div>
+    `;
+  }
+
+  function renderStep7_Intention() {
+    return `
+      <h2 class="review-step-title">Step 7: Set Your Weekly Intention</h2>
+      <p class="review-step-instruction">What is your one primary intention for the coming week?</p>
+
+      <div style="margin-top:2rem">
+        <label class="review-label">Weekly Intention:</label>
+        <textarea class="review-textarea-large" id="weeklyIntention"
+          placeholder="One clear, focused intention for this week...">${reviewState.step7_intention || ''}</textarea>
+
+        <label class="review-label" style="margin-top:1.5rem">Gratitude:</label>
+        <textarea class="review-textarea" id="weeklyGratitude"
+          placeholder="What are you grateful for?">${reviewState.step7_gratitude || ''}</textarea>
+      </div>
+    `;
+  }
+
+  function nextStep() {
+    saveCurrentStepData();
+    reviewState.currentStep++;
+    saveWeeklyReview(reviewState);
+    renderReviewStep(reviewState.currentStep);
+  }
+
+  function prevStep() {
+    saveCurrentStepData();
+    reviewState.currentStep--;
+    saveWeeklyReview(reviewState);
+    renderReviewStep(reviewState.currentStep);
+  }
+
+  function saveCurrentStepData() {
+    const step = reviewState.currentStep;
+
+    if (step === 2) {
+      reviewState.step2_wins = document.getElementById('lastWeekWins')?.value || '';
+      reviewState.step2_improve = document.getElementById('lastWeekImprove')?.value || '';
+    } else if (step === 3) {
+      reviewState.step3_reflections = document.getElementById('projectReflections')?.value || '';
+    } else if (step === 4) {
+      reviewState.step4_alignment = document.getElementById('alignmentReflection')?.value || '';
+      reviewState.step4_score = parseInt(document.getElementById('alignmentScore')?.value || 5);
+    } else if (step === 5) {
+      const weekStart = getWeekStartSunday();
+      const nextWeekStart = new Date(weekStart);
+      nextWeekStart.setDate(nextWeekStart.getDate() + 7);
+
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(nextWeekStart);
+        d.setDate(d.getDate() + i);
+        const key = dateKey(d);
+        const input = document.getElementById('plan_' + key);
+        if (input) {
+          reviewState.step5_plans[key] = input.value;
+        }
+      }
+    } else if (step === 6) {
+      reviewState.step6_health = document.getElementById('healthReflections')?.value || '';
+    } else if (step === 7) {
+      reviewState.step7_intention = document.getElementById('weeklyIntention')?.value || '';
+      reviewState.step7_gratitude = document.getElementById('weeklyGratitude')?.value || '';
+    }
+  }
+
+  function completeReview() {
+    saveCurrentStepData();
+    reviewState.completed = true;
+    reviewState.completedAt = new Date().toISOString();
+    saveWeeklyReview(reviewState);
+    renderCompletedReview();
+  }
+
+  function renderCompletedReview() {
+    const container = document.getElementById('weeklyReviewContainer');
+    const weekStart = getWeekStartSunday();
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+
+    container.innerHTML = `
+      <div class="review-completion-screen">
+        <div class="review-completion-icon">✓</div>
+        <h2 class="review-step-title">Weekly Review Complete!</h2>
+        <p class="review-step-instruction">
+          Week of ${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} -
+          ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+        </p>
+
+        ${reviewState.step7_intention ? `
+          <div class="review-intention-display">
+            <div class="review-label">Your Intention This Week:</div>
+            <div class="review-intention-text">"${escapeHtml(reviewState.step7_intention)}"</div>
+          </div>
+        ` : ''}
+
+        <div class="review-completion-actions">
+          <button class="review-btn" onclick="switchTab('daily')">Go to Daily View</button>
+          <button class="review-btn" onclick="startOverReview()">Start Over</button>
+        </div>
+
+        <div style="margin-top:2rem;text-align:center;color:var(--leather);opacity:0.7">
+          <small>Completed ${new Date(reviewState.completedAt).toLocaleString()}</small>
+        </div>
+      </div>
+    `;
+  }
+
+  function startOverReview() {
+    if (confirm('Are you sure you want to start the weekly review over? This will reset your progress.')) {
+      const weekStart = getWeekStartSunday();
+      const key = 'fp_weekly_review_' + dateKey(weekStart);
+      localStorage.removeItem(key);
+      renderWeeklyReview();
+    }
   }
 
   // ============================================================

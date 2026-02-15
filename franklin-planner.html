@@ -608,6 +608,102 @@
   .daily-tab-content { animation: fadeIn 0.3s ease; }
   .daily-tab-content.hidden { display: none; }
 
+  /* MONTHLY CALENDAR */
+  .month-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+  }
+
+  .month-day-header {
+    text-align: center;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    padding: 10px 4px;
+    border-bottom: 2px solid var(--cream-deep);
+    font-weight: 700;
+  }
+
+  .month-day-cell {
+    background: var(--cream-dark);
+    border-radius: 4px;
+    min-height: 100px;
+    padding: 8px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .month-day-cell:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-deep);
+    border-color: var(--leather-light);
+  }
+
+  .month-day-cell.other-month {
+    opacity: 0.4;
+    background: var(--cream);
+  }
+
+  .month-day-cell.today {
+    border-color: var(--gold);
+    background: var(--cream);
+  }
+
+  .month-day-cell.has-data {
+    border-left: 3px solid var(--leather-light);
+  }
+
+  .month-day-cell.blocked {
+    background: var(--cream-deep);
+    border-left: 4px solid var(--leather);
+  }
+
+  .month-day-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--leather-dark);
+    margin-bottom: 6px;
+  }
+
+  .month-day-cell.today .month-day-number {
+    color: var(--gold);
+  }
+
+  .month-day-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 11px;
+    color: var(--ink-mid);
+    flex: 1;
+  }
+
+  .month-summary-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 0;
+  }
+
+  .month-summary-icon {
+    font-size: 10px;
+    opacity: 0.7;
+  }
+
+  .month-task-count {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    color: var(--leather);
+  }
+
   .week-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -804,11 +900,446 @@
     .planner-grid { grid-template-columns: 1fr; }
     .goals-section { grid-template-columns: 1fr; }
     .week-grid { grid-template-columns: repeat(7, 1fr); }
+    .month-day-cell { min-height: 80px; padding: 6px; }
+    .month-day-number { font-size: 16px; }
+    .month-summary-item { font-size: 10px; }
+    .master-detail-row { grid-template-columns: 1fr; }
+    #projectListContainer { grid-template-columns: 1fr; }
   }
   @media (max-width: 600px) {
     body { padding: 12px; }
     .week-grid { grid-template-columns: repeat(3, 1fr); }
     .health-grid { grid-template-columns: repeat(2, 1fr); }
+    .month-day-cell { min-height: 60px; padding: 4px; }
+    .month-day-number { font-size: 14px; margin-bottom: 4px; }
+    .month-summary-item { font-size: 9px; gap: 2px; }
+    .month-day-header { font-size: 10px; padding: 8px 2px; }
+    .master-item-header { flex-wrap: wrap; }
+    .master-item-meta { font-size: 11px; }
+    .project-action-item { flex-wrap: wrap; }
+    .project-action-btn { font-size: 11px; padding: 3px 8px; }
+  }
+
+  /* MASTER LIST */
+  .master-item {
+    border-bottom: 1px solid var(--cream-dark);
+    padding: 12px 0;
+    transition: all 0.2s;
+  }
+  .master-item:last-child { border-bottom: none; }
+
+  .master-item-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 3px;
+    transition: background 0.2s;
+  }
+  .master-item-header:hover { background: var(--cream-dark); }
+
+  .master-item-priority {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    min-width: 22px;
+    text-align: center;
+  }
+
+  .master-item-title {
+    flex: 1;
+    font-size: 15px;
+    color: var(--ink);
+    font-family: 'EB Garamond', serif;
+  }
+
+  .master-item-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 12px;
+    color: var(--ink-light);
+    font-family: 'Courier Prime', monospace;
+  }
+
+  .master-status-badge {
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-family: 'Courier Prime', monospace;
+    background: var(--cream-dark);
+    color: var(--ink-mid);
+  }
+
+  .master-tag {
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    background: var(--gold-light);
+    color: var(--ink);
+  }
+
+  .master-item-details {
+    display: none;
+    margin-top: 12px;
+    padding: 16px;
+    background: var(--cream-dark);
+    border-radius: 4px;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .master-item-details.expanded { display: block; }
+
+  .master-detail-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .master-detail-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .master-detail-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+
+  .master-detail-input {
+    background: white;
+    border: 1px solid var(--cream-deep);
+    border-radius: 3px;
+    padding: 6px 10px;
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+  }
+
+  .master-detail-select {
+    background: white;
+    border: 1px solid var(--cream-deep);
+    border-radius: 3px;
+    padding: 6px 10px;
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .master-notes-area {
+    width: 100%;
+    min-height: 80px;
+    background: white;
+    border: 1px solid var(--cream-deep);
+    border-radius: 3px;
+    padding: 10px;
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    color: var(--ink);
+    resize: vertical;
+    outline: none;
+    margin-top: 8px;
+  }
+
+  .master-item-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .master-delete-btn {
+    background: none;
+    border: 1px solid var(--red-priority);
+    color: var(--red-priority);
+    padding: 6px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'EB Garamond', serif;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+  .master-delete-btn:hover {
+    background: var(--red-priority);
+    color: white;
+  }
+
+  /* PROJECTS */
+  .project-card {
+    background: var(--cream);
+    border-radius: 4px;
+    padding: 16px;
+    box-shadow: 0 2px 8px var(--shadow-warm);
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    border-left: 4px solid var(--leather);
+  }
+
+  .project-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px var(--shadow-deep);
+  }
+
+  .project-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--leather-dark);
+    margin-bottom: 8px;
+  }
+
+  .project-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    font-size: 12px;
+    color: var(--ink-mid);
+    font-family: 'Courier Prime', monospace;
+    margin-bottom: 8px;
+  }
+
+  .project-status-badge {
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    background: var(--cream-dark);
+    color: var(--ink-mid);
+  }
+
+  .project-card-tag {
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    background: var(--gold-light);
+    color: var(--ink);
+  }
+
+  .project-card-progress {
+    font-size: 13px;
+    color: var(--ink-light);
+    margin-top: 4px;
+  }
+
+  .project-action-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+
+  .project-action-item:last-child { border-bottom: none; }
+
+  .project-action-checkbox {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--leather-light);
+    border-radius: 2px;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: white;
+  }
+
+  .project-action-checkbox.checked {
+    background: var(--leather);
+    border-color: var(--leather);
+  }
+
+  .project-action-checkbox.checked::after {
+    content: '✓';
+    color: white;
+    font-size: 11px;
+  }
+
+  .project-action-priority {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    min-width: 22px;
+    margin-top: 2px;
+  }
+
+  .project-action-text {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.4;
+    font-family: 'EB Garamond', serif;
+    color: var(--ink);
+  }
+
+  .project-action-text.done {
+    text-decoration: line-through;
+    color: var(--ink-light);
+  }
+
+  .project-action-btn {
+    background: none;
+    border: 1px solid var(--leather-light);
+    color: var(--leather);
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'EB Garamond', serif;
+    font-size: 12px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .project-action-btn:hover {
+    background: var(--leather);
+    color: var(--cream);
+  }
+
+  .project-action-del {
+    background: none;
+    border: none;
+    color: var(--ink-light);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 2px 4px;
+    transition: color 0.2s;
+  }
+
+  .project-action-del:hover {
+    color: var(--red-priority);
+  }
+
+  .project-color-option {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .project-color-option:hover {
+    transform: scale(1.1);
+  }
+
+  .project-color-option.selected {
+    border-color: var(--ink);
+    box-shadow: 0 0 0 2px var(--cream);
+  }
+
+  /* TAGS */
+  .tag-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: white;
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  .tag-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background: var(--cream-dark);
+    border-radius: 4px;
+  }
+
+  .tag-color-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    border: 1px solid var(--cream-deep);
+  }
+
+  .tag-name-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--cream-deep);
+    font-family: 'EB Garamond', serif;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    padding: 2px 4px;
+  }
+
+  .tag-delete-btn {
+    background: none;
+    border: none;
+    color: var(--ink-light);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 2px 4px;
+    transition: color 0.2s;
+  }
+
+  .tag-delete-btn:hover {
+    color: var(--red-priority);
+  }
+
+  .tag-color-picker-option {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .tag-color-picker-option:hover {
+    transform: scale(1.1);
+  }
+
+  .tag-color-picker-option.selected {
+    border-color: var(--ink);
+  }
+
+  .global-tag-pill {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+
+  .global-tag-pill:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px var(--shadow-warm);
+  }
+
+  .global-tag-pill.selected {
+    box-shadow: 0 0 0 2px var(--ink);
+  }
+
+  /* BLOCK DAY DIALOG */
+  .block-type-btn:hover {
+    border-color: var(--leather) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-warm);
   }
 
   /* TOAST */
@@ -852,19 +1383,45 @@
 <nav class="tab-nav">
   <button class="tab active" onclick="switchTab('daily')">Daily</button>
   <button class="tab" onclick="switchTab('weekly')">Weekly</button>
+  <button class="tab" onclick="switchTab('monthly')">Monthly</button>
+  <button class="tab" onclick="switchTab('masterlist')">Master List</button>
+  <button class="tab" onclick="switchTab('projects')">Projects</button>
   <button class="tab" onclick="switchTab('goals')">Goals & Values</button>
   <button class="tab" onclick="switchTab('history')">History</button>
 </nav>
+
+<!-- Global Tag Filter -->
+<div id="globalTagFilter" style="display:flex;gap:8px;align-items:center;margin-bottom:20px;padding:0 4px;flex-wrap:wrap;">
+  <span style="font-family:'Courier Prime',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-light);">Filter:</span>
+  <div id="globalTagPills" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+</div>
 
 <!-- DAILY VIEW -->
 <div id="tab-daily" class="daily-tab-content">
   <div class="planner-grid">
     <div class="left-column">
 
+      <!-- Day Status -->
+      <div class="card" id="dayBlockedCard" style="display:none;background:var(--cream-dark);">
+        <div class="card-body" style="padding:12px 20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span id="blockedIcon" style="font-size:20px;">🏖️</span>
+              <div>
+                <div style="font-family:'Playfair Display',serif;font-size:16px;color:var(--leather-dark);font-weight:600;" id="blockedLabel">Vacation Day</div>
+                <div style="font-size:13px;color:var(--ink-mid);">This day is blocked out</div>
+              </div>
+            </div>
+            <button onclick="unblockDay()" style="background:none;border:1px solid var(--leather-light);color:var(--leather);padding:6px 14px;border-radius:3px;cursor:pointer;font-family:'EB Garamond',serif;font-size:13px;">Unblock Day</button>
+          </div>
+        </div>
+      </div>
+
       <!-- Daily Focus -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">✦ Daily Focus</span>
+          <button onclick="showBlockDayDialog()" class="action-btn secondary" style="padding:4px 12px;font-size:12px;">Block Day</button>
         </div>
         <div class="card-body">
           <textarea id="dailyFocus" placeholder="What matters most today? What is your intention for this day..." rows="2"></textarea>
@@ -889,7 +1446,10 @@
               <option selected>B</option>
               <option>C</option>
             </select>
-            <input class="add-task-input" id="newTaskInput" placeholder="Add a task..." 
+            <select class="priority-select" id="newTaskTag" style="min-width:90px;">
+              <option value="">No tag</option>
+            </select>
+            <input class="add-task-input" id="newTaskInput" placeholder="Add a task..."
               onkeydown="if(event.key==='Enter') addTask()">
             <button class="add-btn" onclick="addTask()">+</button>
           </div>
@@ -1029,6 +1589,168 @@
   </div>
 </div>
 
+<!-- MONTHLY VIEW -->
+<div id="tab-monthly" class="weekly-tab-content">
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">✦ <span id="monthViewTitle">Month</span></span>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <button class="date-btn" onclick="changeMonth(-1)">‹</button>
+        <button class="action-btn secondary" onclick="goToCurrentMonth()" style="padding:5px 14px;font-size:13px;">Today</button>
+        <button class="date-btn" onclick="changeMonth(1)">›</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="month-calendar" id="monthCalendar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MASTER LIST -->
+<div id="tab-masterlist" class="weekly-tab-content">
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header">
+      <span class="card-title">✦ Quick Capture</span>
+    </div>
+    <div class="card-body">
+      <div style="display:flex;gap:12px;align-items:center;">
+        <input class="add-task-input" id="masterCaptureInput" placeholder="Add item to master list..."
+          onkeydown="if(event.key==='Enter') captureMasterItem()" style="flex:1;font-size:16px;padding:12px 16px;">
+        <button class="add-btn" onclick="captureMasterItem()" style="padding:12px 24px;font-size:16px;">+ Capture</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">✦ Master List</span>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <select id="masterFilterStatus" onchange="renderMasterList()" style="background:var(--cream-dark);border:1px solid var(--cream-deep);color:var(--ink);padding:5px 10px;border-radius:3px;font-family:'EB Garamond',serif;font-size:13px;cursor:pointer;">
+          <option value="active">Active</option>
+          <option value="all">All</option>
+          <option value="inbox">Inbox</option>
+          <option value="someday">Someday/Maybe</option>
+          <option value="waiting">Waiting</option>
+          <option value="scheduled">Scheduled</option>
+          <option value="complete">Complete</option>
+        </select>
+        <select id="masterSortBy" onchange="renderMasterList()" style="background:var(--cream-dark);border:1px solid var(--cream-deep);color:var(--ink);padding:5px 10px;border-radius:3px;font-family:'EB Garamond',serif;font-size:13px;cursor:pointer;">
+          <option value="priority">Sort: Priority</option>
+          <option value="duedate">Sort: Due Date</option>
+          <option value="added">Sort: Date Added</option>
+        </select>
+      </div>
+    </div>
+    <div class="card-body">
+      <div id="masterListContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div id="tab-projects" class="weekly-tab-content">
+  <!-- Project List View -->
+  <div id="projectListView">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">✦ Projects</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <select id="projectFilter" onchange="renderProjectList()" style="background:var(--cream-dark);border:1px solid var(--cream-deep);color:var(--ink);padding:5px 10px;border-radius:3px;font-family:'EB Garamond',serif;font-size:13px;cursor:pointer;">
+            <option value="all">All</option>
+            <option value="active" selected>Active</option>
+            <option value="someday">Someday/Maybe</option>
+            <option value="waiting">Waiting</option>
+            <option value="complete">Complete</option>
+          </select>
+          <button class="action-btn" onclick="createNewProject()" style="padding:6px 16px;font-size:14px;">+ New Project</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id="projectListContainer" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Detail View -->
+  <div id="projectDetailView" style="display:none;">
+    <div class="card">
+      <div class="card-header">
+        <button onclick="closeProjectDetail()" class="action-btn secondary" style="padding:5px 12px;font-size:13px;">← Back to Projects</button>
+        <button onclick="deleteCurrentProject()" class="action-btn secondary" style="padding:5px 12px;font-size:13px;border-color:var(--red-priority);color:var(--red-priority);">Delete Project</button>
+      </div>
+      <div class="card-body">
+        <div style="margin-bottom:24px;">
+          <input type="text" id="projectDetailTitle" placeholder="Project Title"
+            style="width:100%;background:transparent;border:none;border-bottom:2px solid var(--leather-light);font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:var(--leather-dark);padding:8px 0;outline:none;"
+            onblur="updateCurrentProject('title', this.value)">
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px;">
+          <div>
+            <label style="display:block;font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:6px;">Status</label>
+            <select id="projectDetailStatus" onchange="updateCurrentProject('status', this.value)"
+              style="width:100%;background:white;border:1px solid var(--cream-deep);border-radius:3px;padding:8px 12px;font-family:'EB Garamond',serif;font-size:14px;color:var(--ink);cursor:pointer;">
+              <option value="active">Active</option>
+              <option value="someday">Someday/Maybe</option>
+              <option value="waiting">Waiting</option>
+              <option value="complete">Complete</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:6px;">Color</label>
+            <div id="projectColorPicker" style="display:flex;gap:8px;"></div>
+          </div>
+          <div>
+            <label style="display:block;font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:6px;">Tag</label>
+            <select id="projectDetailTag"
+              style="width:100%;background:white;border:1px solid var(--cream-deep);border-radius:3px;padding:8px 12px;font-family:'EB Garamond',serif;font-size:14px;color:var(--ink);outline:none;cursor:pointer;"
+              onchange="updateCurrentProject('tagId', this.value)">
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:6px;">Due Date</label>
+            <input type="date" id="projectDetailDueDate"
+              style="width:100%;background:white;border:1px solid var(--cream-deep);border-radius:3px;padding:8px 12px;font-family:'EB Garamond',serif;font-size:14px;color:var(--ink);outline:none;"
+              onchange="updateCurrentProject('dueDate', this.value)">
+          </div>
+        </div>
+
+        <div style="margin-bottom:24px;">
+          <label style="display:block;font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:6px;">What does done look like?</label>
+          <textarea id="projectDetailOutcome" placeholder="Describe the successful outcome..."
+            style="width:100%;min-height:80px;background:white;border:1px solid var(--cream-deep);border-radius:3px;padding:10px;font-family:'EB Garamond',serif;font-size:15px;color:var(--ink);resize:vertical;outline:none;"
+            onblur="updateCurrentProject('outcome', this.value)"></textarea>
+        </div>
+
+        <div style="margin-bottom:24px;">
+          <label style="display:block;font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:6px;">Notes & Reference Material</label>
+          <textarea id="projectDetailNotes" placeholder="Project notes, links, reference materials..."
+            style="width:100%;min-height:100px;background:white;border:1px solid var(--cream-deep);border-radius:3px;padding:10px;font-family:'EB Garamond',serif;font-size:15px;color:var(--ink);resize:vertical;outline:none;"
+            onblur="updateCurrentProject('notes', this.value)"></textarea>
+        </div>
+
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <label style="font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);">Action Items</label>
+          </div>
+          <div id="projectActionItems" style="margin-bottom:16px;"></div>
+          <div style="display:flex;gap:8px;padding-top:12px;border-top:1px solid var(--cream-deep);">
+            <select id="newActionPriority" style="background:var(--cream-dark);border:1px solid var(--cream-deep);color:var(--ink);padding:6px 8px;border-radius:3px;font-family:'Courier Prime',monospace;font-size:13px;cursor:pointer;">
+              <option>A</option>
+              <option selected>B</option>
+              <option>C</option>
+            </select>
+            <input type="text" id="newActionText" placeholder="Add action item..."
+              style="flex:1;background:white;border:1px solid var(--cream-deep);border-radius:3px;padding:7px 12px;font-family:'EB Garamond',serif;font-size:15px;color:var(--ink);outline:none;"
+              onkeydown="if(event.key==='Enter') addProjectAction()">
+            <button class="add-btn" onclick="addProjectAction()">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- GOALS & VALUES -->
 <div id="tab-goals" class="weekly-tab-content">
   <div class="goals-section">
@@ -1050,6 +1772,19 @@
       <h3>This Month's Focus</h3>
       <div id="monthGoalsList"></div>
       <button onclick="addMonthGoal()" style="margin-top:10px;background:none;border:1px dashed var(--leather-light);color:var(--leather);padding:5px 14px;border-radius:3px;cursor:pointer;font-family:'EB Garamond',serif;font-size:13px;">+ Add Goal</button>
+    </div>
+    <div class="goal-card">
+      <h3>Tags & Colors</h3>
+      <div id="tagsList" style="display:flex;flex-direction:column;gap:8px;"></div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--cream-deep);">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div id="newTagColorPicker" style="display:flex;gap:4px;flex-wrap:wrap;"></div>
+          <input type="text" id="newTagName" placeholder="Tag name..."
+            style="flex:1;background:white;border:1px solid var(--cream-deep);border-radius:3px;padding:6px 10px;font-family:'EB Garamond',serif;font-size:14px;color:var(--ink);outline:none;"
+            onkeydown="if(event.key==='Enter') addTag()">
+          <button onclick="addTag()" style="background:none;border:1px dashed var(--leather-light);color:var(--leather);padding:5px 14px;border-radius:3px;cursor:pointer;font-family:'EB Garamond',serif;font-size:13px;">+ Add Tag</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1084,6 +1819,35 @@
   </div>
 </div>
 
+<!-- Block Day Dialog -->
+<div id="blockDayDialog" onclick="if(event.target===this) closeBlockDayDialog()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(44,36,22,0.5);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:var(--cream);border-radius:6px;padding:24px;max-width:400px;width:90%;box-shadow:0 8px 32px var(--shadow-deep);">
+    <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:var(--leather-dark);margin-bottom:16px;">Block This Day</h3>
+    <p style="font-size:14px;color:var(--ink-mid);margin-bottom:20px;">Mark this entire day as unavailable:</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+      <button onclick="blockDay('vacation', '🏖️', 'Vacation')" class="block-type-btn" style="background:var(--cream-dark);border:2px solid var(--cream-deep);border-radius:4px;padding:16px 12px;cursor:pointer;transition:all 0.2s;font-family:'EB Garamond',serif;">
+        <div style="font-size:24px;margin-bottom:6px;">🏖️</div>
+        <div style="font-size:14px;color:var(--ink);">Vacation</div>
+      </button>
+      <button onclick="blockDay('sick', '🤒', 'Sick Day')" class="block-type-btn" style="background:var(--cream-dark);border:2px solid var(--cream-deep);border-radius:4px;padding:16px 12px;cursor:pointer;transition:all 0.2s;font-family:'EB Garamond',serif;">
+        <div style="font-size:24px;margin-bottom:6px;">🤒</div>
+        <div style="font-size:14px;color:var(--ink);">Sick Day</div>
+      </button>
+      <button onclick="blockDay('holiday', '🎉', 'Holiday')" class="block-type-btn" style="background:var(--cream-dark);border:2px solid var(--cream-deep);border-radius:4px;padding:16px 12px;cursor:pointer;transition:all 0.2s;font-family:'EB Garamond',serif;">
+        <div style="font-size:24px;margin-bottom:6px;">🎉</div>
+        <div style="font-size:14px;color:var(--ink);">Holiday</div>
+      </button>
+      <button onclick="blockDay('other', '🚫', 'Unavailable')" class="block-type-btn" style="background:var(--cream-dark);border:2px solid var(--cream-deep);border-radius:4px;padding:16px 12px;cursor:pointer;transition:all 0.2s;font-family:'EB Garamond',serif;">
+        <div style="font-size:24px;margin-bottom:6px;">🚫</div>
+        <div style="font-size:14px;color:var(--ink);">Unavailable</div>
+      </button>
+    </div>
+
+    <button onclick="closeBlockDayDialog()" style="width:100%;background:transparent;border:1px solid var(--leather-light);color:var(--leather);padding:10px;border-radius:3px;cursor:pointer;font-family:'EB Garamond',serif;font-size:14px;">Cancel</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1114,7 +1878,8 @@
       focus: '', notes: '', reflection: '',
       tasks: [], appointments: {},
       health: { weight:'', water:'', glucose:'', exercise:'', sleep:'', hr:'' },
-      habits: {}
+      habits: {},
+      blocked: null // null, or {type: 'vacation'|'sick'|'holiday'|'other', label: '...'}
     };
   }
 
@@ -1191,15 +1956,28 @@
   function renderTasks(tasks, listId, deleteFunc, toggleFunc) {
     const ul = document.getElementById(listId);
     ul.innerHTML = '';
-    tasks.forEach((task, i) => {
+
+    // Filter by global tag if active
+    let displayTasks = tasks;
+    if (listId === 'taskList' && globalTagFilter !== null) {
+      displayTasks = tasks.map((task, idx) => ({...task, originalIndex: idx}))
+        .filter(task => task.tagId === globalTagFilter);
+    } else {
+      displayTasks = tasks.map((task, idx) => ({...task, originalIndex: idx}));
+    }
+
+    displayTasks.forEach(task => {
       const li = document.createElement('li');
       li.className = 'task-item';
+      const tagBadge = listId === 'taskList' ? createTagBadge(task.tagId) : '';
+      const idx = task.originalIndex;
       li.innerHTML = `
-        <div class="task-checkbox ${task.done ? 'checked' : ''}" onclick="${toggleFunc}(${i})"></div>
+        <div class="task-checkbox ${task.done ? 'checked' : ''}" onclick="${toggleFunc}(${idx})"></div>
         <span class="task-priority priority-${task.priority}">${task.priority}</span>
-        <span class="task-text ${task.done ? 'done' : ''}" contenteditable="true" 
-          onblur="updateTaskText(${i}, this.textContent, '${listId}')">${task.text}</span>
-        <button class="task-del" onclick="${deleteFunc}(${i})">✕</button>`;
+        <span class="task-text ${task.done ? 'done' : ''}" contenteditable="true"
+          onblur="updateTaskText(${idx}, this.textContent, '${listId}')">${task.text}</span>
+        ${tagBadge}
+        <button class="task-del" onclick="${deleteFunc}(${idx})">✕</button>`;
       ul.appendChild(li);
     });
   }
@@ -1207,13 +1985,18 @@
   function addTask() {
     const input = document.getElementById('newTaskInput');
     const priority = document.getElementById('newTaskPriority').value;
+    const tagSelect = document.getElementById('newTaskTag');
+    const tagId = tagSelect ? tagSelect.value : '';
     if (!input.value.trim()) return;
     const key = dateKey(currentDate);
     const data = loadDay(key);
-    data.tasks.push({ text: input.value.trim(), priority, done: false });
+    const newTask = { text: input.value.trim(), priority, done: false };
+    if (tagId) newTask.tagId = tagId;
+    data.tasks.push(newTask);
     data.tasks.sort((a,b) => a.priority.localeCompare(b.priority));
     saveDay(key, data);
     input.value = '';
+    if (tagSelect) tagSelect.value = '';
     renderTasks(data.tasks, 'taskList', 'deleteTask', 'toggleTask');
   }
 
@@ -1434,16 +2217,31 @@
       d.setDate(d.getDate() + i);
       const isToday = d.getTime() === today.getTime();
       const dData = loadDay(dateKey(d));
-      const taskPreviews = dData.tasks.slice(0,3).map(t =>
-        `<div class="wdc-task">${t.priority}: ${t.text}</div>`).join('');
-      const taskCount = dData.tasks.length;
+
       const card = document.createElement('div');
       card.className = 'week-day-card' + (isToday ? ' today' : '');
-      card.innerHTML = `
-        <div class="wdc-name">${DAYS[d.getDay()].substring(0,3)}</div>
-        <div class="wdc-num">${d.getDate()}</div>
-        ${taskPreviews}
-        ${taskCount > 3 ? `<div class="wdc-task-count">+${taskCount-3} more</div>` : ''}`;
+
+      if (dData.blocked) {
+        // Show blocked day
+        card.style.background = 'var(--cream-deep)';
+        card.style.borderLeft = '4px solid var(--leather)';
+        card.innerHTML = `
+          <div class="wdc-name">${DAYS[d.getDay()].substring(0,3)}</div>
+          <div class="wdc-num">${d.getDate()}</div>
+          <div style="text-align:center;margin-top:8px;font-size:28px;">${dData.blocked.icon}</div>
+          <div style="text-align:center;font-size:11px;color:var(--ink-mid);margin-top:4px;">${dData.blocked.label}</div>`;
+      } else {
+        // Normal day view
+        const taskPreviews = dData.tasks.slice(0,3).map(t =>
+          `<div class="wdc-task">${t.priority}: ${t.text}</div>`).join('');
+        const taskCount = dData.tasks.length;
+        card.innerHTML = `
+          <div class="wdc-name">${DAYS[d.getDay()].substring(0,3)}</div>
+          <div class="wdc-num">${d.getDate()}</div>
+          ${taskPreviews}
+          ${taskCount > 3 ? `<div class="wdc-task-count">+${taskCount-3} more</div>` : ''}`;
+      }
+
       card.onclick = () => {
         saveCurrent();
         currentDate = new Date(d);
@@ -1453,6 +2251,152 @@
       };
       grid.appendChild(card);
     }
+  }
+
+  // ============================================================
+  // MONTHLY CALENDAR
+  // ============================================================
+  let viewMonth = new Date(currentDate);
+  viewMonth.setDate(1);
+  viewMonth.setHours(0,0,0,0);
+
+  function renderMonthCalendar() {
+    const grid = document.getElementById('monthCalendar');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    // Update month title
+    const titleEl = document.getElementById('monthViewTitle');
+    if (titleEl) {
+      titleEl.textContent = MONTHS[viewMonth.getMonth()] + ' ' + viewMonth.getFullYear();
+    }
+
+    // Day headers
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    dayNames.forEach(name => {
+      const header = document.createElement('div');
+      header.className = 'month-day-header';
+      header.textContent = name;
+      grid.appendChild(header);
+    });
+
+    // Get first day of month and total days
+    const firstDay = new Date(viewMonth);
+    const lastDay = new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const startDayOfWeek = firstDay.getDay();
+
+    // Get previous month days to fill
+    const prevMonth = new Date(viewMonth);
+    prevMonth.setMonth(prevMonth.getMonth() - 1);
+    const daysInPrevMonth = new Date(viewMonth.getFullYear(), viewMonth.getMonth(), 0).getDate();
+
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    // Previous month days
+    for (let i = startDayOfWeek - 1; i >= 0; i--) {
+      const day = daysInPrevMonth - i;
+      const d = new Date(prevMonth.getFullYear(), prevMonth.getMonth(), day);
+      grid.appendChild(createMonthDayCell(d, day, true));
+    }
+
+    // Current month days
+    for (let day = 1; day <= daysInMonth; day++) {
+      const d = new Date(viewMonth.getFullYear(), viewMonth.getMonth(), day);
+      grid.appendChild(createMonthDayCell(d, day, false));
+    }
+
+    // Next month days to fill grid
+    const totalCells = startDayOfWeek + daysInMonth;
+    const remainingCells = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+    for (let day = 1; day <= remainingCells; day++) {
+      const d = new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, day);
+      grid.appendChild(createMonthDayCell(d, day, true));
+    }
+  }
+
+  function createMonthDayCell(date, dayNum, isOtherMonth) {
+    const cell = document.createElement('div');
+    cell.className = 'month-day-cell';
+
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const isToday = date.getTime() === today.getTime();
+
+    if (isOtherMonth) {
+      cell.classList.add('other-month');
+    }
+    if (isToday) {
+      cell.classList.add('today');
+    }
+
+    const key = dateKey(date);
+    const dayData = loadDay(key);
+
+    // Check if day is blocked
+    if (dayData.blocked) {
+      cell.classList.add('blocked');
+      cell.innerHTML = `
+        <div class="month-day-number">${dayNum}</div>
+        <div class="month-day-summary" style="align-items:center;justify-content:center;flex:1;">
+          <div style="font-size:24px;margin-bottom:4px;">${dayData.blocked.icon}</div>
+          <div style="text-align:center;font-size:10px;color:var(--ink-mid);">${dayData.blocked.label}</div>
+        </div>`;
+    } else {
+      // Normal day view
+      const hasTasks = (dayData.tasks || []).length > 0;
+      const hasAppts = Object.keys(dayData.appointments || {}).length > 0;
+      const hasFocus = (dayData.focus || '').trim().length > 0;
+
+      if (hasTasks || hasAppts || hasFocus) {
+        cell.classList.add('has-data');
+      }
+
+      let summaryHTML = '';
+
+      if (hasFocus) {
+        summaryHTML += `<div class="month-summary-item"><span class="month-summary-icon">✦</span><span>Focus set</span></div>`;
+      }
+
+      if (hasTasks) {
+        const total = dayData.tasks.length;
+        const done = dayData.tasks.filter(t => t.done).length;
+        summaryHTML += `<div class="month-summary-item"><span class="month-summary-icon">☑</span><span class="month-task-count">${done}/${total} tasks</span></div>`;
+      }
+
+      if (hasAppts) {
+        const apptCount = Object.values(dayData.appointments).reduce((sum, arr) => sum + arr.length, 0);
+        summaryHTML += `<div class="month-summary-item"><span class="month-summary-icon">📅</span><span class="month-task-count">${apptCount} appt${apptCount > 1 ? 's' : ''}</span></div>`;
+      }
+
+      cell.innerHTML = `
+        <div class="month-day-number">${dayNum}</div>
+        <div class="month-day-summary">${summaryHTML}</div>`;
+    }
+
+    cell.onclick = () => {
+      saveCurrent();
+      currentDate = new Date(date);
+      loadCurrentDay();
+      updateDateDisplay();
+      switchTab('daily');
+    };
+
+    return cell;
+  }
+
+  function changeMonth(delta) {
+    viewMonth.setMonth(viewMonth.getMonth() + delta);
+    renderMonthCalendar();
+  }
+
+  function goToCurrentMonth() {
+    viewMonth = new Date();
+    viewMonth.setDate(1);
+    viewMonth.setHours(0,0,0,0);
+    renderMonthCalendar();
   }
 
   // ============================================================
@@ -1494,6 +2438,10 @@
           onblur="updateMonthGoal(${i}, this.value)">`;
       mgList.appendChild(row);
     });
+
+    // Render tags section
+    renderTagsList();
+    renderNewTagColorPicker();
   }
 
   function updateValue(i, val) {
@@ -1569,6 +2517,50 @@
   }
 
   // ============================================================
+  // BLOCK DAY
+  // ============================================================
+  function showBlockDayDialog() {
+    document.getElementById('blockDayDialog').style.display = 'flex';
+  }
+
+  function closeBlockDayDialog() {
+    document.getElementById('blockDayDialog').style.display = 'none';
+  }
+
+  function blockDay(type, icon, label) {
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+    data.blocked = { type, icon, label };
+    saveDay(key, data);
+    closeBlockDayDialog();
+    updateBlockedDayDisplay();
+    showToast(`Day blocked as ${label}`);
+  }
+
+  function unblockDay() {
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+    data.blocked = null;
+    saveDay(key, data);
+    updateBlockedDayDisplay();
+    showToast('Day unblocked');
+  }
+
+  function updateBlockedDayDisplay() {
+    const key = dateKey(currentDate);
+    const data = loadDay(key);
+    const card = document.getElementById('dayBlockedCard');
+
+    if (data.blocked) {
+      card.style.display = 'block';
+      document.getElementById('blockedIcon').textContent = data.blocked.icon;
+      document.getElementById('blockedLabel').textContent = data.blocked.label;
+    } else {
+      card.style.display = 'none';
+    }
+  }
+
+  // ============================================================
   // SAVE / LOAD
   // ============================================================
   function saveCurrent() {
@@ -1604,8 +2596,10 @@
     renderTasks(data.tasks || [], 'taskList', 'deleteTask', 'toggleTask');
     renderSchedule(data.appointments || {});
     populateTimeDropdown();
+    renderTagDropdown('newTaskTag', '');
     const habits = loadHabits();
     renderHabits(habits, data.habits || {});
+    updateBlockedDayDisplay();
   }
 
   function saveData() {
@@ -1623,6 +2617,9 @@
     // Hide all
     document.getElementById('tab-daily').classList.add('hidden');
     document.getElementById('tab-weekly').classList.remove('active');
+    document.getElementById('tab-monthly').classList.remove('active');
+    document.getElementById('tab-masterlist').classList.remove('active');
+    document.getElementById('tab-projects').classList.remove('active');
     document.getElementById('tab-goals').classList.remove('active');
     document.getElementById('tab-history').classList.remove('active');
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1638,13 +2635,32 @@
       renderWeekGrid();
       const tasks = loadWeeklyTasks();
       renderTasks(tasks, 'weeklyTaskList', 'deleteWeeklyTask', 'toggleWeeklyTask');
+    } else if (name === 'monthly') {
+      document.getElementById('tab-monthly').classList.add('active');
+      document.querySelectorAll('.tab')[2].classList.add('active');
+      viewMonth = new Date(currentDate);
+      viewMonth.setDate(1);
+      viewMonth.setHours(0,0,0,0);
+      renderMonthCalendar();
+    } else if (name === 'masterlist') {
+      document.getElementById('tab-masterlist').classList.add('active');
+      document.querySelectorAll('.tab')[3].classList.add('active');
+      renderMasterList();
+    } else if (name === 'projects') {
+      document.getElementById('tab-projects').classList.add('active');
+      document.querySelectorAll('.tab')[4].classList.add('active');
+      // Reset to list view when switching to projects tab
+      document.getElementById('projectListView').style.display = 'block';
+      document.getElementById('projectDetailView').style.display = 'none';
+      currentProjectId = null;
+      renderProjectList();
     } else if (name === 'goals') {
       document.getElementById('tab-goals').classList.add('active');
-      document.querySelectorAll('.tab')[2].classList.add('active');
+      document.querySelectorAll('.tab')[5].classList.add('active');
       renderGoals();
     } else if (name === 'history') {
       document.getElementById('tab-history').classList.add('active');
-      document.querySelectorAll('.tab')[3].classList.add('active');
+      document.querySelectorAll('.tab')[6].classList.add('active');
       renderHistory();
     }
   }
@@ -1708,17 +2724,744 @@
   }
 
   // ============================================================
+  // MASTER LIST
+  // ============================================================
+  function loadMasterList() {
+    const raw = localStorage.getItem('fp_masterlist');
+    return raw ? JSON.parse(raw) : [];
+  }
+
+  function saveMasterList(items) {
+    localStorage.setItem('fp_masterlist', JSON.stringify(items));
+  }
+
+  function captureMasterItem() {
+    const input = document.getElementById('masterCaptureInput');
+    const title = input.value.trim();
+    if (!title) return;
+
+    const items = loadMasterList();
+    const newItem = {
+      id: 'ml_' + Date.now(),
+      title: title,
+      priority: 'B',
+      status: 'inbox',
+      dueDate: '',
+      tag: '',
+      notes: '',
+      dateAdded: new Date().toISOString()
+    };
+
+    items.push(newItem);
+    saveMasterList(items);
+    input.value = '';
+    renderMasterList();
+    showToast('Item captured ✓');
+  }
+
+  function renderMasterList() {
+    const container = document.getElementById('masterListContainer');
+    if (!container) return;
+
+    let items = loadMasterList();
+    const filterStatus = document.getElementById('masterFilterStatus').value;
+    const sortBy = document.getElementById('masterSortBy').value;
+
+    // Filter by status
+    if (filterStatus === 'active') {
+      items = items.filter(item => item.status !== 'complete');
+    } else if (filterStatus !== 'all') {
+      const statusMap = {
+        'inbox': 'inbox',
+        'someday': 'someday',
+        'waiting': 'waiting',
+        'scheduled': 'scheduled',
+        'complete': 'complete'
+      };
+      items = items.filter(item => item.status === statusMap[filterStatus]);
+    }
+
+    // Filter by global tag
+    if (globalTagFilter !== null) {
+      items = items.filter(item => item.tagId === globalTagFilter);
+    }
+
+    // Sort
+    if (sortBy === 'priority') {
+      items.sort((a, b) => a.priority.localeCompare(b.priority));
+    } else if (sortBy === 'duedate') {
+      items.sort((a, b) => {
+        if (!a.dueDate && !b.dueDate) return 0;
+        if (!a.dueDate) return 1;
+        if (!b.dueDate) return -1;
+        return a.dueDate.localeCompare(b.dueDate);
+      });
+    } else if (sortBy === 'added') {
+      items.sort((a, b) => b.dateAdded.localeCompare(a.dateAdded));
+    }
+
+    if (items.length === 0) {
+      container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--ink-light);font-style:italic;">No items in this view. Use Quick Capture to add items.</div>';
+      return;
+    }
+
+    container.innerHTML = items.map(item => {
+      const statusLabels = {
+        'inbox': 'Inbox',
+        'someday': 'Someday/Maybe',
+        'waiting': 'Waiting',
+        'scheduled': 'Scheduled',
+        'complete': 'Complete'
+      };
+
+      const priorityColor = item.priority === 'A' ? 'var(--red-priority)' :
+                           item.priority === 'B' ? 'var(--leather)' : 'var(--ink-light)';
+
+      const tagBadge = createTagBadge(item.tagId);
+
+      return `
+        <div class="master-item">
+          <div class="master-item-header" onclick="toggleMasterItem('${item.id}')">
+            <span class="master-item-priority" style="color:${priorityColor}">${item.priority}</span>
+            <span class="master-item-title" style="${item.status === 'complete' ? 'text-decoration:line-through;color:var(--ink-light);' : ''}">${item.title}</span>
+            <div class="master-item-meta">
+              ${tagBadge}
+              ${item.dueDate ? `<span>📅 ${item.dueDate}</span>` : ''}
+              <span class="master-status-badge">${statusLabels[item.status]}</span>
+            </div>
+          </div>
+          <div class="master-item-details" id="details-${item.id}">
+            <div class="master-detail-row">
+              <div class="master-detail-field">
+                <label class="master-detail-label">Priority</label>
+                <select class="master-detail-select" onchange="updateMasterItem('${item.id}', 'priority', this.value)">
+                  <option value="A" ${item.priority === 'A' ? 'selected' : ''}>A — Must Do</option>
+                  <option value="B" ${item.priority === 'B' ? 'selected' : ''}>B — Should Do</option>
+                  <option value="C" ${item.priority === 'C' ? 'selected' : ''}>C — Nice To Do</option>
+                </select>
+              </div>
+              <div class="master-detail-field">
+                <label class="master-detail-label">Status</label>
+                <select class="master-detail-select" onchange="updateMasterItem('${item.id}', 'status', this.value)">
+                  <option value="inbox" ${item.status === 'inbox' ? 'selected' : ''}>Inbox</option>
+                  <option value="someday" ${item.status === 'someday' ? 'selected' : ''}>Someday/Maybe</option>
+                  <option value="waiting" ${item.status === 'waiting' ? 'selected' : ''}>Waiting</option>
+                  <option value="scheduled" ${item.status === 'scheduled' ? 'selected' : ''}>Scheduled</option>
+                  <option value="complete" ${item.status === 'complete' ? 'selected' : ''}>Complete</option>
+                </select>
+              </div>
+              <div class="master-detail-field">
+                <label class="master-detail-label">Due Date</label>
+                <input type="date" class="master-detail-input" value="${item.dueDate}"
+                  onchange="updateMasterItem('${item.id}', 'dueDate', this.value)">
+              </div>
+            </div>
+            <div class="master-detail-field">
+              <label class="master-detail-label">Tag</label>
+              <select class="master-detail-select" id="masterTagSelect-${item.id}" onchange="updateMasterItem('${item.id}', 'tagId', this.value)">
+              </select>
+            </div>
+            <div class="master-detail-field">
+              <label class="master-detail-label">Notes</label>
+              <textarea class="master-notes-area" placeholder="Add notes..."
+                onblur="updateMasterItem('${item.id}', 'notes', this.value)">${item.notes}</textarea>
+            </div>
+            <div class="master-item-actions">
+              <button class="master-delete-btn" onclick="deleteMasterItem('${item.id}')">Delete Item</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function toggleMasterItem(id) {
+    const details = document.getElementById('details-' + id);
+    if (details) {
+      const isExpanding = !details.classList.contains('expanded');
+      details.classList.toggle('expanded');
+
+      // Populate tag dropdown when expanding
+      if (isExpanding) {
+        const items = loadMasterList();
+        const item = items.find(i => i.id === id);
+        if (item) {
+          renderTagDropdown('masterTagSelect-' + id, item.tagId || '');
+        }
+      }
+    }
+  }
+
+  function updateMasterItem(id, field, value) {
+    const items = loadMasterList();
+    const item = items.find(i => i.id === id);
+    if (item) {
+      item[field] = value;
+      saveMasterList(items);
+      renderMasterList();
+    }
+  }
+
+  function deleteMasterItem(id) {
+    if (!confirm('Delete this item?')) return;
+    const items = loadMasterList();
+    const filtered = items.filter(i => i.id !== id);
+    saveMasterList(filtered);
+    renderMasterList();
+    showToast('Item deleted');
+  }
+
+  // ============================================================
+  // PROJECTS
+  // ============================================================
+  const PROJECT_COLORS = [
+    '#8b5e3c', // Leather brown
+    '#c9a84c', // Gold
+    '#8b2c2c', // Deep red
+    '#3d6b4f', // Forest green
+    '#2c4a6b', // Navy blue
+    '#5a6b7a'  // Slate
+  ];
+
+  let currentProjectId = null;
+
+  function loadProjects() {
+    const raw = localStorage.getItem('fp_projects');
+    return raw ? JSON.parse(raw) : [];
+  }
+
+  function saveProjects(projects) {
+    localStorage.setItem('fp_projects', JSON.stringify(projects));
+  }
+
+  function createNewProject() {
+    const projects = loadProjects();
+    const newProject = {
+      id: 'proj_' + Date.now(),
+      title: 'New Project',
+      status: 'active',
+      color: PROJECT_COLORS[0],
+      tag: '',
+      dueDate: '',
+      outcome: '',
+      notes: '',
+      actionItems: [],
+      createdAt: new Date().toISOString()
+    };
+
+    projects.push(newProject);
+    saveProjects(projects);
+    openProjectDetail(newProject.id);
+  }
+
+  function renderProjectList() {
+    const container = document.getElementById('projectListContainer');
+    if (!container) return;
+
+    let projects = loadProjects();
+    const filter = document.getElementById('projectFilter').value;
+
+    // Filter by status
+    if (filter !== 'all') {
+      projects = projects.filter(p => p.status === filter);
+    }
+
+    // Filter by global tag
+    if (globalTagFilter !== null) {
+      projects = projects.filter(p => p.tagId === globalTagFilter);
+    }
+
+    if (projects.length === 0) {
+      container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--ink-light);font-style:italic;grid-column:1/-1;">No projects found. Click "+ New Project" to create one.</div>';
+      return;
+    }
+
+    container.innerHTML = projects.map(project => {
+      const statusLabels = {
+        'active': 'Active',
+        'someday': 'Someday/Maybe',
+        'waiting': 'Waiting',
+        'complete': 'Complete'
+      };
+
+      const totalActions = project.actionItems.length;
+      const doneActions = project.actionItems.filter(a => a.done).length;
+      const tagBadge = createTagBadge(project.tagId);
+
+      return `
+        <div class="project-card" style="border-left-color:${project.color}" onclick="openProjectDetail('${project.id}')">
+          <div class="project-card-title">${project.title}</div>
+          <div class="project-card-meta">
+            <span class="project-status-badge">${statusLabels[project.status]}</span>
+            ${tagBadge}
+            ${project.dueDate ? `<span>📅 ${project.dueDate}</span>` : ''}
+          </div>
+          ${totalActions > 0 ? `<div class="project-card-progress">${doneActions} of ${totalActions} complete</div>` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  function openProjectDetail(projectId) {
+    currentProjectId = projectId;
+    const projects = loadProjects();
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+
+    document.getElementById('projectListView').style.display = 'none';
+    document.getElementById('projectDetailView').style.display = 'block';
+
+    document.getElementById('projectDetailTitle').value = project.title;
+    document.getElementById('projectDetailStatus').value = project.status;
+    renderTagDropdown('projectDetailTag', project.tagId || '');
+    document.getElementById('projectDetailDueDate').value = project.dueDate;
+    document.getElementById('projectDetailOutcome').value = project.outcome;
+    document.getElementById('projectDetailNotes').value = project.notes;
+
+    // Render color picker
+    const colorPicker = document.getElementById('projectColorPicker');
+    colorPicker.innerHTML = PROJECT_COLORS.map(color =>
+      `<div class="project-color-option ${project.color === color ? 'selected' : ''}"
+        style="background:${color}"
+        onclick="updateCurrentProject('color', '${color}')"></div>`
+    ).join('');
+
+    renderProjectActions();
+  }
+
+  function closeProjectDetail() {
+    document.getElementById('projectListView').style.display = 'block';
+    document.getElementById('projectDetailView').style.display = 'none';
+    currentProjectId = null;
+    renderProjectList();
+  }
+
+  function updateCurrentProject(field, value) {
+    if (!currentProjectId) return;
+
+    const projects = loadProjects();
+    const project = projects.find(p => p.id === currentProjectId);
+    if (!project) return;
+
+    project[field] = value;
+    saveProjects(projects);
+
+    // Update color picker display if color changed
+    if (field === 'color') {
+      const colorPicker = document.getElementById('projectColorPicker');
+      colorPicker.innerHTML = PROJECT_COLORS.map(color =>
+        `<div class="project-color-option ${value === color ? 'selected' : ''}"
+          style="background:${color}"
+          onclick="updateCurrentProject('color', '${color}')"></div>`
+      ).join('');
+    }
+  }
+
+  function deleteCurrentProject() {
+    if (!currentProjectId) return;
+    if (!confirm('Delete this project and all its action items?')) return;
+
+    const projects = loadProjects();
+    const filtered = projects.filter(p => p.id !== currentProjectId);
+    saveProjects(filtered);
+    closeProjectDetail();
+    showToast('Project deleted');
+  }
+
+  function renderProjectActions() {
+    const container = document.getElementById('projectActionItems');
+    if (!container || !currentProjectId) return;
+
+    const projects = loadProjects();
+    const project = projects.find(p => p.id === currentProjectId);
+    if (!project) return;
+
+    // Sort: incomplete first, then by priority
+    const actions = [...project.actionItems].sort((a, b) => {
+      if (a.done !== b.done) return a.done ? 1 : -1;
+      return a.priority.localeCompare(b.priority);
+    });
+
+    if (actions.length === 0) {
+      container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--ink-light);font-style:italic;">No action items yet. Add one below.</div>';
+      return;
+    }
+
+    container.innerHTML = actions.map(action => {
+      const priorityColor = action.priority === 'A' ? 'var(--red-priority)' :
+                           action.priority === 'B' ? 'var(--leather)' : 'var(--ink-light)';
+
+      return `
+        <div class="project-action-item">
+          <div class="project-action-checkbox ${action.done ? 'checked' : ''}"
+            onclick="toggleProjectAction('${action.id}')"></div>
+          <span class="project-action-priority" style="color:${priorityColor}">${action.priority}</span>
+          <span class="project-action-text ${action.done ? 'done' : ''}">${action.text}</span>
+          <button class="project-action-btn" onclick="sendActionToDaily('${action.id}')">Send to Daily</button>
+          <button class="project-action-del" onclick="deleteProjectAction('${action.id}')">✕</button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function addProjectAction() {
+    if (!currentProjectId) return;
+
+    const textInput = document.getElementById('newActionText');
+    const prioritySelect = document.getElementById('newActionPriority');
+    const text = textInput.value.trim();
+
+    if (!text) return;
+
+    const projects = loadProjects();
+    const project = projects.find(p => p.id === currentProjectId);
+    if (!project) return;
+
+    const newAction = {
+      id: 'act_' + Date.now(),
+      text: text,
+      priority: prioritySelect.value,
+      done: false
+    };
+
+    project.actionItems.push(newAction);
+    saveProjects(projects);
+
+    textInput.value = '';
+    prioritySelect.value = 'B';
+    renderProjectActions();
+  }
+
+  function toggleProjectAction(actionId) {
+    if (!currentProjectId) return;
+
+    const projects = loadProjects();
+    const project = projects.find(p => p.id === currentProjectId);
+    if (!project) return;
+
+    const action = project.actionItems.find(a => a.id === actionId);
+    if (!action) return;
+
+    action.done = !action.done;
+    saveProjects(projects);
+    renderProjectActions();
+  }
+
+  function deleteProjectAction(actionId) {
+    if (!currentProjectId) return;
+
+    const projects = loadProjects();
+    const project = projects.find(p => p.id === currentProjectId);
+    if (!project) return;
+
+    project.actionItems = project.actionItems.filter(a => a.id !== actionId);
+    saveProjects(projects);
+    renderProjectActions();
+  }
+
+  function sendActionToDaily(actionId) {
+    if (!currentProjectId) return;
+
+    const projects = loadProjects();
+    const project = projects.find(p => p.id === currentProjectId);
+    if (!project) return;
+
+    const action = project.actionItems.find(a => a.id === actionId);
+    if (!action) return;
+
+    // Prompt for date
+    const dateInput = prompt('Enter date (YYYY-MM-DD) or leave blank for today:', dateKey(new Date()));
+    if (dateInput === null) return; // Cancelled
+
+    const targetDate = dateInput.trim() || dateKey(new Date());
+
+    // Load or create day data
+    const dayData = loadDay(targetDate);
+
+    // Add action as task
+    dayData.tasks.push({
+      text: action.text,
+      priority: action.priority,
+      done: false
+    });
+
+    // Sort by priority
+    dayData.tasks.sort((a, b) => a.priority.localeCompare(b.priority));
+
+    saveDay(targetDate, dayData);
+    showToast(`Action sent to ${targetDate} ✓`);
+  }
+
+  // ============================================================
+  // TAGS & COLORS
+  // ============================================================
+  const TAG_COLORS = [
+    '#8b5e3c', // leather brown
+    '#c9a84c', // gold
+    '#8b2c2c', // deep red
+    '#3d6b4f', // forest green
+    '#2c4a6b', // navy blue
+    '#5a6b7a', // slate
+    '#7a4b8b', // purple
+    '#8b7a2c', // olive
+    '#2c6b6b', // teal
+    '#8b4b2c', // terra cotta
+    '#4b6b2c', // moss
+    '#6b2c4b'  // burgundy
+  ];
+
+  let selectedNewTagColor = TAG_COLORS[0];
+  let globalTagFilter = null; // null means "All"
+
+  function loadTags() {
+    const raw = localStorage.getItem('fp_tags');
+    if (raw) {
+      return JSON.parse(raw);
+    } else {
+      // Initialize with default tags
+      const defaultTags = [
+        { id: 'tag_work', name: 'Work', color: '#2c4a6b' },
+        { id: 'tag_personal', name: 'Personal', color: '#3d6b4f' },
+        { id: 'tag_health', name: 'Health', color: '#8b2c2c' }
+      ];
+      localStorage.setItem('fp_tags', JSON.stringify(defaultTags));
+      return defaultTags;
+    }
+  }
+
+  function saveTags(tags) {
+    localStorage.setItem('fp_tags', JSON.stringify(tags));
+  }
+
+  function renderTagsList() {
+    const container = document.getElementById('tagsList');
+    if (!container) return;
+
+    const tags = loadTags();
+
+    if (tags.length === 0) {
+      container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--ink-light);font-style:italic;">No tags defined yet.</div>';
+      return;
+    }
+
+    container.innerHTML = tags.map(tag => `
+      <div class="tag-item">
+        <div class="tag-color-swatch" style="background:${tag.color}"></div>
+        <input class="tag-name-input" value="${tag.name}"
+          onblur="updateTagName('${tag.id}', this.value)">
+        <button class="tag-delete-btn" onclick="deleteTag('${tag.id}')">✕</button>
+      </div>
+    `).join('');
+  }
+
+  function renderNewTagColorPicker() {
+    const container = document.getElementById('newTagColorPicker');
+    if (!container) return;
+
+    container.innerHTML = TAG_COLORS.map(color => `
+      <div class="tag-color-picker-option ${color === selectedNewTagColor ? 'selected' : ''}"
+        style="background:${color}"
+        onclick="selectNewTagColor('${color}')"></div>
+    `).join('');
+  }
+
+  function selectNewTagColor(color) {
+    selectedNewTagColor = color;
+    renderNewTagColorPicker();
+  }
+
+  function addTag() {
+    const nameInput = document.getElementById('newTagName');
+    const name = nameInput.value.trim();
+
+    if (!name) return;
+
+    const tags = loadTags();
+    const newTag = {
+      id: 'tag_' + Date.now(),
+      name: name,
+      color: selectedNewTagColor
+    };
+
+    tags.push(newTag);
+    saveTags(tags);
+
+    nameInput.value = '';
+    selectedNewTagColor = TAG_COLORS[0];
+    renderTagsList();
+    renderNewTagColorPicker();
+    renderGlobalTagFilter();
+    showToast('Tag added ✓');
+  }
+
+  function updateTagName(tagId, newName) {
+    const tags = loadTags();
+    const tag = tags.find(t => t.id === tagId);
+    if (tag) {
+      tag.name = newName.trim();
+      saveTags(tags);
+      renderGlobalTagFilter();
+    }
+  }
+
+  function deleteTag(tagId) {
+    if (!confirm('Delete this tag? Items using this tag will have it removed.')) return;
+
+    const tags = loadTags();
+    const filtered = tags.filter(t => t.id !== tagId);
+    saveTags(filtered);
+
+    // Remove tag from all items
+    removeTagFromAllItems(tagId);
+
+    renderTagsList();
+    renderGlobalTagFilter();
+    showToast('Tag deleted');
+  }
+
+  function removeTagFromAllItems(tagId) {
+    // Remove from daily tasks
+    const dayKeys = Object.keys(localStorage)
+      .filter(k => k.startsWith('fp_day_'));
+
+    dayKeys.forEach(key => {
+      const data = JSON.parse(localStorage.getItem(key));
+      if (data.tasks) {
+        data.tasks.forEach(task => {
+          if (task.tagId === tagId) {
+            delete task.tagId;
+          }
+        });
+        localStorage.setItem(key, JSON.stringify(data));
+      }
+    });
+
+    // Remove from master list
+    const masterList = loadMasterList();
+    masterList.forEach(item => {
+      if (item.tagId === tagId) {
+        delete item.tagId;
+      }
+    });
+    saveMasterList(masterList);
+
+    // Remove from projects
+    const projects = loadProjects();
+    projects.forEach(project => {
+      if (project.tagId === tagId) {
+        delete project.tagId;
+      }
+    });
+    saveProjects(projects);
+  }
+
+  function getTagById(tagId) {
+    if (!tagId) return null;
+    const tags = loadTags();
+    return tags.find(t => t.id === tagId);
+  }
+
+  function createTagBadge(tagId) {
+    if (!tagId) return '';
+    const tag = getTagById(tagId);
+    if (!tag) return '';
+
+    const bgColor = hexToRGBA(tag.color, 0.85);
+    return `<span class="tag-badge" style="background:${bgColor}">${tag.name}</span>`;
+  }
+
+  function hexToRGBA(hex, alpha) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  function renderTagDropdown(containerId, selectedTagId, onchangeFunc) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const tags = loadTags();
+
+    container.innerHTML = `
+      <option value="">No tag</option>
+      ${tags.map(tag => `<option value="${tag.id}" ${selectedTagId === tag.id ? 'selected' : ''}>${tag.name}</option>`).join('')}
+    `;
+
+    if (onchangeFunc) {
+      container.onchange = function() {
+        onchangeFunc(this.value);
+      };
+    }
+  }
+
+  function renderGlobalTagFilter() {
+    const container = document.getElementById('globalTagPills');
+    if (!container) return;
+
+    const tags = loadTags();
+
+    container.innerHTML = `
+      <div class="global-tag-pill ${globalTagFilter === null ? 'selected' : ''}"
+        style="background:var(--cream-dark);color:var(--ink)"
+        onclick="setGlobalTagFilter(null)">All</div>
+      ${tags.map(tag => {
+        const isSelected = globalTagFilter === tag.id;
+        const bgColor = isSelected ? tag.color : hexToRGBA(tag.color, 0.3);
+        const textColor = isSelected ? 'white' : tag.color;
+        return `
+          <div class="global-tag-pill ${isSelected ? 'selected' : ''}"
+            style="background:${bgColor};color:${textColor}"
+            onclick="setGlobalTagFilter('${tag.id}')">${tag.name}</div>
+        `;
+      }).join('')}
+    `;
+  }
+
+  function setGlobalTagFilter(tagId) {
+    globalTagFilter = tagId;
+    renderGlobalTagFilter();
+
+    // Re-render all views
+    const activeTab = document.querySelector('.tab.active');
+    if (activeTab) {
+      const tabName = activeTab.textContent.toLowerCase().replace(/\s+/g, '');
+      if (tabName.includes('daily')) {
+        loadCurrentDay();
+      } else if (tabName.includes('master')) {
+        renderMasterList();
+      } else if (tabName.includes('projects')) {
+        renderProjectList();
+      }
+    }
+  }
+
+  function filterByGlobalTag(items, getTagIdFunc) {
+    if (globalTagFilter === null) return items;
+    return items.filter(item => getTagIdFunc(item) === globalTagFilter);
+  }
+
+  // ============================================================
   // INIT
   // ============================================================
   updateDateDisplay();
   loadCurrentDay();
   populateTimeDropdown();
+  renderGlobalTagFilter();
+  renderTagsList();
+  renderNewTagColorPicker();
 
-  // Keyboard shortcut: Ctrl+S to save
+  // Keyboard shortcuts
   document.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && e.key === 's') {
       e.preventDefault();
       saveData();
+    }
+    if (e.key === 'Escape') {
+      const dialog = document.getElementById('blockDayDialog');
+      if (dialog.style.display === 'flex') {
+        closeBlockDayDialog();
+      }
     }
   });
 </script>
